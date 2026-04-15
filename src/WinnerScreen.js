@@ -124,6 +124,17 @@ export default function WinnerScreen({ winner, onRestart }) {
             className="relative z-10 flex flex-col items-center gap-6 px-8 py-10 text-center"
           >
 
+            {/* Title Above Crown */}
+            <motion.div
+              initial={{ y: -40, opacity: 0 }}
+              animate={{ y: 0,   opacity: 1  }}
+              transition={{ delay: 0.3, type: 'spring', bounce: 0.6 }}
+              className="text-4xl md:text-5xl font-bold text-gray-200 mt-4"
+              dir="rtl"
+            >
+              بطل مسابقة جسر المعرفة
+            </motion.div>
+
             {/* Crown icon */}
             <motion.div
               animate={crownAnim}
