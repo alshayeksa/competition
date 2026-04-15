@@ -176,8 +176,10 @@ export default function QuestionModal({ question, team, onAnswer }) {
   }, []);
 
   const isRed = team.color === 'red';
-  const glowColor = isRed ? 'rgba(220,38,38,0.3)' : 'rgba(37,99,235,0.3)';
+  const glowColor = isRed ? 'rgba(220,38,38,0.5)' : 'rgba(37,99,235,0.5)';
+  const glowStrong = isRed ? 'rgba(220,38,38,0.8)' : 'rgba(37,99,235,0.8)';
   const borderColor = isRed ? 'border-red-500/50' : 'border-blue-500/50';
+  const optionLabels = ['أ', 'ب', 'ج', 'د'];
 
   return (
     <>
@@ -190,50 +192,128 @@ export default function QuestionModal({ question, team, onAnswer }) {
       )}
 
       {/* النافذة الرئيسية */}
-      <div className="fixed inset-0 bg-black/90 backdrop-blur-sm flex items-center justify-center p-4 z-40" dir="rtl">
+      <div className="fixed inset-0 bg-black/90 backdrop-blur-md flex items-center justify-center p-4 z-40" dir="rtl">
+        
+        {/* جسيمات خلفية متحركة */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          {Array.from({ length: 30 }).map((_, i) => (
+            <motion.div
+              key={i}
+              className={`absolute w-1 h-1 rounded-full ${isRed ? 'bg-red-400' : 'bg-blue-400'}`}
+              initial={{ x: Math.random() * window.innerWidth, y: Math.random() * window.innerHeight, opacity: 0 }}
+              animate={{ 
+                y: [null, Math.random() * -600],
+                opacity: [0, 0.8, 0],
+                scale: [0, 1.5, 0]
+              }}
+              transition={{ duration: 3 + Math.random() * 3, delay: i * 0.15, repeat: Infinity, ease: 'easeOut' }}
+            />
+          ))}
+        </div>
+
         <motion.div 
-          initial={{ opacity: 0, scale: 0.9, y: 20 }} 
-          animate={{ opacity: 1, scale: 1, y: 0 }} 
-          transition={{ type: 'spring', bounce: 0.4 }}
-          className={`bg-slate-900 p-8 md:p-12 rounded-3xl max-w-3xl w-full text-center relative border-2 ${borderColor}`}
-          style={{ boxShadow: `0 0 50px ${glowColor}, inset 0 0 20px ${glowColor}` }}
+          initial={{ opacity: 0, scale: 0.6, rotateX: 40 }} 
+          animate={{ opacity: 1, scale: 1, rotateX: 0 }} 
+          transition={{ type: 'spring', bounce: 0.45, duration: 0.8 }}
+          className={`bg-gradient-to-b from-slate-900 via-slate-900 to-slate-950 p-8 md:p-12 rounded-3xl max-w-3xl w-full text-center relative border-2 ${borderColor} overflow-hidden`}
+          style={{ boxShadow: `0 0 80px ${glowColor}, 0 0 160px ${glowColor}, inset 0 0 30px ${glowColor}` }}
         >
           
+          {/* خطوط ديكور متحركة في الأعلى */}
           <motion.div 
-            initial={{ y: -20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            className={`inline-block px-6 py-2 rounded-full border mb-8 ${isRed ? 'bg-red-950/50 border-red-500 text-red-400' : 'bg-blue-950/50 border-blue-500 text-blue-400'}`}
+            animate={{ x: ['-100%', '100%'] }}
+            transition={{ duration: 3, repeat: Infinity, ease: 'linear' }}
+            className="absolute top-0 left-0 right-0 h-1 pointer-events-none"
+            style={{ background: `linear-gradient(90deg, transparent, ${glowStrong}, transparent)` }}
+          />
+          <motion.div 
+            animate={{ x: ['100%', '-100%'] }}
+            transition={{ duration: 3, repeat: Infinity, ease: 'linear' }}
+            className="absolute bottom-0 left-0 right-0 h-1 pointer-events-none"
+            style={{ background: `linear-gradient(90deg, transparent, ${glowStrong}, transparent)` }}
+          />
+
+          {/* بادج اسم الفريق */}
+          <motion.div 
+            initial={{ y: -30, opacity: 0, scale: 0.7 }}
+            animate={{ y: 0, opacity: 1, scale: 1 }}
+            transition={{ type: 'spring', bounce: 0.6 }}
+            className={`inline-flex items-center gap-2 px-8 py-3 rounded-full border-2 mb-8 ${isRed ? 'bg-red-950/70 border-red-500 text-red-300' : 'bg-blue-950/70 border-blue-500 text-blue-300'}`}
+            style={{ boxShadow: `0 0 20px ${glowColor}` }}
           >
-            <span className="text-xl font-bold">سؤال لـ: {team.name}</span>
+            <motion.span 
+              animate={{ scale: [1, 1.3, 1] }}
+              transition={{ repeat: Infinity, duration: 1.5 }}
+              className="text-2xl"
+            >⚡</motion.span>
+            <span className="text-xl font-black">سؤال لـ: {team.name}</span>
           </motion.div>
           
           <div className="absolute top-8 left-8">
             <Timer seconds={40} onTimeUp={handleTimeUp} />
           </div>
           
+          {/* نص السؤال */}
           <motion.h3 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.2 }}
-            className="text-3xl md:text-4xl font-extrabold mb-12 text-transparent bg-clip-text bg-gradient-to-b from-white to-gray-400"
+            initial={{ opacity: 0, y: 20, scale: 0.9 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            transition={{ delay: 0.2, type: 'spring', bounce: 0.4 }}
+            className="text-3xl md:text-4xl font-black mb-14 leading-relaxed"
+            style={{
+              background: 'linear-gradient(180deg, #ffffff 0%, #e2e8f0 50%, #94a3b8 100%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              filter: `drop-shadow(0 2px 10px ${glowColor})`
+            }}
           >
             {question.question}
           </motion.h3>
           
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6">
+          {/* الخيارات */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 md:gap-6">
             {question.options.map((opt, idx) => (
               <motion.button 
                 key={idx} 
-                initial={{ opacity: 0, x: idx % 2 === 0 ? 20 : -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.3 + idx * 0.1 }}
-                whileHover={optionsEnabled && !showFeedback ? { scale: 1.03, backgroundColor: 'rgba(255,255,255,0.1)' } : {}}
-                whileTap={optionsEnabled && !showFeedback ? { scale: 0.98 } : {}}
+                initial={{ opacity: 0, y: 40, scale: 0.8 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                transition={{ delay: 0.4 + idx * 0.12, type: 'spring', bounce: 0.5 }}
+                whileHover={optionsEnabled && !showFeedback ? { 
+                  scale: 1.06, 
+                  boxShadow: `0 0 30px ${glowStrong}`,
+                  y: -4
+                } : {}}
+                whileTap={optionsEnabled && !showFeedback ? { scale: 0.95 } : {}}
                 onClick={() => handleOptionClick(idx)}
                 disabled={!optionsEnabled || showFeedback}
-                className={`relative overflow-hidden p-6 bg-slate-800/80 border border-slate-600 rounded-2xl text-xl md:text-2xl text-white font-bold shadow-lg group ${(!optionsEnabled || showFeedback) ? 'pointer-events-none opacity-70' : ''}`}
+                className={`relative overflow-hidden p-5 md:p-6 rounded-2xl text-xl md:text-2xl text-white font-bold shadow-xl group transition-colors duration-300 ${(!optionsEnabled || showFeedback) ? 'pointer-events-none opacity-60' : 'cursor-pointer'} ${isRed ? 'bg-gradient-to-br from-slate-800 to-red-950/40 border-2 border-red-500/30 hover:border-red-400' : 'bg-gradient-to-br from-slate-800 to-blue-950/40 border-2 border-blue-500/30 hover:border-blue-400'}`}
               >
-                <div className={`absolute inset-0 w-2 ${isRed ? 'bg-red-500' : 'bg-blue-500'} group-hover:w-full transition-all duration-300 opacity-20`} />
+                {/* حركة الإضاءة المتنقلة */}
+                <motion.div
+                  animate={{ x: ['-200%', '200%'] }}
+                  transition={{ duration: 2.5, repeat: Infinity, ease: 'easeInOut', delay: idx * 0.3 }}
+                  className="absolute inset-0 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity"
+                  style={{ background: `linear-gradient(90deg, transparent, ${glowColor}, transparent)` }}
+                />
+                
+                {/* حرف الاختيار */}
+                <span className={`absolute top-3 right-3 w-8 h-8 rounded-full flex items-center justify-center text-sm font-black ${isRed ? 'bg-red-500/30 text-red-300' : 'bg-blue-500/30 text-blue-300'}`}>
+                  {optionLabels[idx]}
+                </span>
+                
+                {/* دوران الإطار للمربعات النشطة */}
+                {optionsEnabled && !showFeedback && (
+                  <motion.div
+                    animate={{ rotate: 360 }}
+                    transition={{ duration: 6, repeat: Infinity, ease: 'linear' }}
+                    className="absolute inset-0 pointer-events-none opacity-20"
+                    style={{
+                      background: `conic-gradient(from 0deg, transparent 0%, transparent 70%, ${isRed ? '#ef4444' : '#3b82f6'} 85%, transparent 100%)`,
+                      scale: 2.5
+                    }}
+                  />
+                )}
+                <div className="absolute inset-[2px] bg-slate-800/90 rounded-xl z-0 group-hover:bg-slate-700/90 transition-colors" />
+
                 <span className="relative z-10">{opt}</span>
               </motion.button>
             ))}
