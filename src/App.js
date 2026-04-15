@@ -6,6 +6,7 @@ import { motion } from 'framer-motion';
 
 export default function App() {
   const [phase, setPhase] = useState('splash');
+  const [showVideo, setShowVideo] = useState(false);
   const [teams, setTeams] = useState({
     team1: { name: 'قطاع الخدمات', color: 'red' },
     team2: { name: 'قطاع الأعمال', color: 'blue' }
@@ -136,6 +137,49 @@ export default function App() {
         >
           ابدأ التحدي
         </motion.button>
+
+        {/* زر تشغيل فيديو الشرح */}
+        <motion.button 
+          initial={{ y: 50, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: 0.8 }}
+          whileHover={{ scale: 1.05, boxShadow: "0 0 30px rgba(168,85,247,0.6)" }}
+          whileTap={{ scale: 0.95 }}
+          onClick={() => setShowVideo(true)} 
+          className="mt-6 px-10 py-4 bg-gradient-to-r from-purple-600 to-violet-600 text-2xl font-bold rounded-2xl transition-all shadow-[0_0_20px_rgba(168,85,247,0.4)] flex items-center gap-3"
+        >
+          <span className="text-3xl">▶️</span> شرح المسابقة
+        </motion.button>
+
+        {/* نافذة الفيديو */}
+        {showVideo && (
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="fixed inset-0 bg-black/90 backdrop-blur-md flex items-center justify-center z-50 p-4"
+            onClick={(e) => { if (e.target === e.currentTarget) setShowVideo(false); }}
+          >
+            <motion.div 
+              initial={{ scale: 0.7, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ type: 'spring', bounce: 0.4 }}
+              className="relative w-full max-w-3xl rounded-3xl overflow-hidden border-2 border-purple-500/50 shadow-[0_0_60px_rgba(168,85,247,0.5)]"
+            >
+              <video 
+                src="/merged.mp4" 
+                controls 
+                autoPlay 
+                className="w-full rounded-3xl"
+              />
+              <button 
+                onClick={() => setShowVideo(false)}
+                className="absolute top-4 left-4 w-12 h-12 bg-black/70 hover:bg-black/90 rounded-full flex items-center justify-center text-white text-2xl font-bold transition-colors border border-white/20"
+              >
+                ✕
+              </button>
+            </motion.div>
+          </motion.div>
+        )}
       </div>
     );
   }
