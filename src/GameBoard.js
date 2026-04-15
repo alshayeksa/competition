@@ -127,7 +127,7 @@ export default function GameBoard({ teams, initialTurn, onWin }) {
     <div className="w-full flex flex-col items-center">
       <div className="mb-8 w-full max-w-4xl flex justify-between items-center bg-white/5 p-4 rounded-2xl backdrop-blur-sm border border-white/10">
         <div className="text-xl font-bold text-red-400 drop-shadow-md">
-          {teams.team1.name} <br/><span className="text-sm opacity-80">(من الأعلى للأسفل)</span>
+          {teams.team1.name}
         </div>
         
         <motion.div 
@@ -140,7 +140,7 @@ export default function GameBoard({ teams, initialTurn, onWin }) {
         </motion.div>
 
         <div className="text-xl font-bold text-blue-400 drop-shadow-md text-left">
-          {teams.team2.name} <br/><span className="text-sm opacity-80">(من اليمين لليسار)</span>
+          {teams.team2.name}
         </div>
       </div>
 
