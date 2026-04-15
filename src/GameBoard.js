@@ -37,14 +37,7 @@ const checkWin = (grid, playerNum) => {
 };
 
 export default function GameBoard({ teams, initialTurn, onWin }) {
-  const getMockGrid = () => {
-    const mock = Array(GRID_SIZE).fill(null).map(() => Array(GRID_SIZE).fill(0));
-    // محاكاة طريق الفريق الأول (الأحمر) متصل بالكامل تقريباً (ينقصه المربع الأخير في أسفل العمود 2)
-    for (let i = 0; i < GRID_SIZE - 1; i++) mock[i][2] = 1; 
-    return mock;
-  };
-
-  const [grid, setGrid] = useState(getMockGrid());
+  const [grid, setGrid] = useState(Array(GRID_SIZE).fill(null).map(() => Array(GRID_SIZE).fill(0)));
   const [selectedCell, setSelectedCell] = useState(null);
   const [cellQuestions, setCellQuestions] = useState({});
   const [questionPool, setQuestionPool] = useState([]);
