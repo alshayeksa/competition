@@ -5,7 +5,7 @@ import TitleLogo from './TitleLogo';
 import { motion } from 'framer-motion';
 
 export default function App() {
-  const [phase, setPhase] = useState('start');
+  const [phase, setPhase] = useState('splash');
   const [teams, setTeams] = useState({
     team1: { name: 'قطاع الخدمات', color: 'red' },
     team2: { name: 'قطاع الأعمال', color: 'blue' }
@@ -72,6 +72,35 @@ export default function App() {
     setInitialTurn(Math.random() > 0.5 ? 1 : 2);
     setPhase('playing');
   };
+
+  if (phase === 'splash') {
+    return (
+      <div 
+        dir="rtl"
+        onClick={() => setPhase('start')}
+        className="min-h-screen bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-indigo-900 via-gray-900 to-black text-white flex flex-col items-center justify-center p-4 cursor-pointer select-none"
+      >
+        <motion.div
+          initial={{ scale: 0.5, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ type: 'spring', bounce: 0.5, duration: 1 }}
+          className="text-center"
+        >
+          <div className="text-8xl mb-8">🌉</div>
+          <h1 className="text-5xl md:text-7xl font-black mb-6 bg-gradient-to-r from-amber-300 via-yellow-400 to-amber-300 bg-clip-text text-transparent drop-shadow-2xl">
+            جسر المعرفة
+          </h1>
+          <motion.p 
+            animate={{ opacity: [0.4, 1, 0.4] }}
+            transition={{ repeat: Infinity, duration: 2, ease: 'easeInOut' }}
+            className="text-2xl md:text-3xl text-gray-300 mt-8"
+          >
+            اضغط للمتابعة
+          </motion.p>
+        </motion.div>
+      </div>
+    );
+  }
 
   if (phase === 'start') {
     return (
