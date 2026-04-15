@@ -47,6 +47,15 @@ export default function WinnerScreen({ winner, onRestart }) {
   const [show, setShow] = useState(false);
   useEffect(() => { const t = setTimeout(() => setShow(true), 200); return () => clearTimeout(t); }, []);
 
+  useEffect(() => {
+    const audio = new Audio('/win.wav');
+    audio.play().catch(err => console.log('Winner audio error:', err));
+    return () => {
+      audio.pause();
+      audio.currentTime = 0;
+    };
+  }, []);
+
   return (
     <div
       dir="rtl"
