@@ -51,9 +51,8 @@ export default function Timer({ seconds, onTimeUp }) {
 
   useEffect(() => {
     // صوت بداية السؤال 
-    setTimeout(() => playBeep(440, 'sine', 0.2, 0.4), 0);
-    setTimeout(() => playBeep(554, 'sine', 0.2, 0.4), 200);
-    setTimeout(() => playBeep(659, 'sine', 0.4, 0.5), 400);
+    const audio = new Audio('/show.wav');
+    audio.play().catch(e => console.log('Audio autoplay blocked by browser:', e));
   }, []);
 
   useEffect(() => {
