@@ -5,19 +5,32 @@ import Timer from './Timer';
 // مكون رسالة الإجابة
 function AnswerFeedback({ isCorrect, onClose }) {
   useEffect(() => {
-    if (isCorrect) {
-      // إيقاف أي أصوات سابقة وتشغيل صوت الإجابة الصحيحة الجديد
-      const audio = new Audio('/correct.wav');
-      audio.play().catch(e => console.log('Audio error:', e));
-    } else {
-      // إيقاف أي أصوات سابقة وتشغيل صوت الإجابة الخاطئة الجديد
-      const audio = new Audio('/wrong.wav');
-      audio.play().catch(e => console.log('Audio error:', e));
-    }
+    const audio = new Audio(isCorrect ? '/correct.wav' : '/wrong.wav');
     
-    // إغلاق الرسالة بعد 5 ثواني
-    const timer = setTimeout(onClose, 5000);
-    return () => clearTimeout(timer);
+    let isFinished = false;
+    const finish = () => {
+      if (!isFinished) {
+        isFinished = true;
+        onClose();
+      }
+    };
+
+    audio.onended = finish;
+
+    audio.play().catch(e => {
+      console.log('Audio error:', e);
+      // Fallback if browser blocks autoplay (e.g. 5 seconds)
+      setTimeout(finish, 5000);
+    });
+
+    // Safety fallback in case audio gets stuck
+    const timer = setTimeout(finish, 10000);
+
+    return () => {
+      clearTimeout(timer);
+      audio.pause();
+      audio.currentTime = 0;
+    };
   }, [isCorrect, onClose]);
 
   return (
@@ -140,11 +153,6 @@ export default function QuestionModal({ question, team, onAnswer }) {
     if (window.stopTimer) {
       window.stopTimer();
     }
-    
-    // تأخير إغلاق النافذة الرئيسية حتى تنتهي الرسالة
-    setTimeout(() => {
-      onAnswer(isCorrect);
-    }, 2600);
   };
 
   const isRed = team.color === 'red';
@@ -157,7 +165,7 @@ export default function QuestionModal({ question, team, onAnswer }) {
       {showFeedback && (
         <AnswerFeedback 
           isCorrect={isCorrectAnswer} 
-          onClose={() => setShowFeedback(false)} 
+          onClose={() => onAnswer(isCorrectAnswer)} 
         />
       )}
 
@@ -183,7 +191,6 @@ export default function QuestionModal({ question, team, onAnswer }) {
             <Timer seconds={40} onTimeUp={() => {
               setIsCorrectAnswer(false);
               setShowFeedback(true);
-              setTimeout(() => onAnswer(false), 2600);
             }} />
           </div>
           
