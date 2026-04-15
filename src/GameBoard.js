@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import Square from './Square';
 import QuestionModal from './QuestionModal';
@@ -42,12 +42,36 @@ export default function GameBoard({ teams, initialTurn, onWin }) {
   const [cellQuestions, setCellQuestions] = useState({});
   const [questionPool, setQuestionPool] = useState([]);
   const [currentTurn, setCurrentTurn] = useState(initialTurn);
+  const bgAudioRef = useRef(null);
+
+  // إعداد اللوحة والصوت عند البدء
+  useEffect(() => {
+    const audio = new Audio('/start.mp3');
+    audio.loop = true; // اجعله يتكرر (looping)
+    bgAudioRef.current = audio;
+
+    // التنظيف عند الانتهاء (كفوز أحد الفريقين)
+    return () => {
+      audio.pause();
+      audio.currentTime = 0;
+    };
+  }, []);
+
+  // تشغيل أو إيقاف الصوت بناءً على فتح/إغلاق سؤال
+  useEffect(() => {
+    if (!bgAudioRef.current) return;
+    const audio = bgAudioRef.current;
+
+    if (selectedCell) {
+      // إيقاف الصوت عند النقر على سؤال
+      audio.pause();
+    } else {
+      // إعادة تشغيل الصوت المتكرر عند إغلاق السؤال أو في بداية اللوحة
+      audio.play().catch(e => console.log('Board audio blocked:', e));
+    }
+  }, [selectedCell]);
 
   useEffect(() => {
-    // تشغيل تأثيرات صوتية مشوقة عند فتح لوحة اللعب
-    const audio = new Audio('/start.mp3');
-    audio.play().catch(e => console.log('Board open audio blocked:', e));
-
     const shuffled = [...allQuestions].sort(() => 0.5 - Math.random());
     const initial = {};
     // Assign one unique question per cell, cycling if questions < cells
