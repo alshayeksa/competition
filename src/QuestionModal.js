@@ -149,8 +149,16 @@ function AnswerFeedback({ isCorrect, onClose }) {
 export default function QuestionModal({ question, team, onAnswer }) {
   const [showFeedback, setShowFeedback] = useState(false);
   const [isCorrectAnswer, setIsCorrectAnswer] = useState(false);
+  const [optionsEnabled, setOptionsEnabled] = useState(false);
+
+  // منع الضغط على الخيارات لمدة ثانية بعد ظهور السؤال لتفادي الضغط العرضي
+  useEffect(() => {
+    const t = setTimeout(() => setOptionsEnabled(true), 1000);
+    return () => clearTimeout(t);
+  }, []);
 
   const handleOptionClick = (idx) => {
+    if (!optionsEnabled || showFeedback) return;
     const isCorrect = idx === question.answer;
     
     setIsCorrectAnswer(isCorrect);
@@ -219,10 +227,11 @@ export default function QuestionModal({ question, team, onAnswer }) {
                 initial={{ opacity: 0, x: idx % 2 === 0 ? 20 : -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.3 + idx * 0.1 }}
-                whileHover={{ scale: 1.03, backgroundColor: 'rgba(255,255,255,0.1)' }}
-                whileTap={{ scale: 0.98 }}
-                onClick={() => handleOptionClick(idx)} 
-                className="relative overflow-hidden p-6 bg-slate-800/80 border border-slate-600 rounded-2xl text-xl md:text-2xl text-white font-bold shadow-lg group"
+                whileHover={optionsEnabled && !showFeedback ? { scale: 1.03, backgroundColor: 'rgba(255,255,255,0.1)' } : {}}
+                whileTap={optionsEnabled && !showFeedback ? { scale: 0.98 } : {}}
+                onClick={() => handleOptionClick(idx)}
+                disabled={!optionsEnabled || showFeedback}
+                className={`relative overflow-hidden p-6 bg-slate-800/80 border border-slate-600 rounded-2xl text-xl md:text-2xl text-white font-bold shadow-lg group ${(!optionsEnabled || showFeedback) ? 'pointer-events-none opacity-70' : ''}`}
               >
                 <div className={`absolute inset-0 w-2 ${isRed ? 'bg-red-500' : 'bg-blue-500'} group-hover:w-full transition-all duration-300 opacity-20`} />
                 <span className="relative z-10">{opt}</span>
