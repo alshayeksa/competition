@@ -48,7 +48,7 @@ export default function WinnerScreen({ winner, onRestart }) {
   useEffect(() => { const t = setTimeout(() => setShow(true), 200); return () => clearTimeout(t); }, []);
 
   useEffect(() => {
-    const audio = new Audio('/winner.mp3');
+    const audio = new Audio('/win.mp3');
     audio.play().catch(err => console.log('Winner audio error:', err));
     return () => {
       audio.pause();
