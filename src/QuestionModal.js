@@ -151,7 +151,10 @@ export default function QuestionModal({ question, team, onAnswer }) {
   const [isCorrectAnswer, setIsCorrectAnswer] = useState(false);
 
   const handleOptionClick = (idx) => {
-    const isCorrect = idx === question.answer;
+    // تم التعديل مؤقتاً لتصبح جميع الإجابات صحيحة (لغرض التجربة والمراجعة)
+    // الكود الأصلي: const isCorrect = idx === question.answer;
+    const isCorrect = true; 
+    
     setIsCorrectAnswer(isCorrect);
     setShowFeedback(true);
     
