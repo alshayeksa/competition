@@ -30,7 +30,7 @@ export default function Timer({ seconds, onTimeUp }) {
       return;
     }
 
-    if (timeLeft <= 0) {
+    if (timeLeft <= 0 && isActive) {
       // إيقاف الصوت عند انتهاء الوقت والوقت يصل للصفر
       if (bgAudioRef.current) {
         bgAudioRef.current.pause();
@@ -39,7 +39,7 @@ export default function Timer({ seconds, onTimeUp }) {
       onTimeUp();
       return;
     }
-  }, [timeLeft, onTimeUp]);
+  }, [timeLeft, onTimeUp, isActive]);
 
   useEffect(() => {
     if (timeLeft <= 0 || !isActive) return;

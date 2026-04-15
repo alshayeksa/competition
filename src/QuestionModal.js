@@ -1,9 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Timer from './Timer';
 
 // مكون رسالة الإجابة
 function AnswerFeedback({ isCorrect, onClose }) {
+  const onCloseRef = React.useRef(onClose);
+  useEffect(() => {
+    onCloseRef.current = onClose;
+  }, [onClose]);
+
   useEffect(() => {
     const audio = new Audio(isCorrect ? '/correct.wav' : '/wrong.wav');
     
@@ -11,7 +16,7 @@ function AnswerFeedback({ isCorrect, onClose }) {
     const finish = () => {
       if (!isFinished) {
         isFinished = true;
-        onClose();
+        onCloseRef.current();
       }
     };
 
@@ -32,7 +37,7 @@ function AnswerFeedback({ isCorrect, onClose }) {
       audio.pause();
       audio.currentTime = 0;
     };
-  }, [isCorrect, onClose]);
+  }, [isCorrect]);
 
   return (
     <AnimatePresence>
@@ -156,6 +161,11 @@ export default function QuestionModal({ question, team, onAnswer }) {
     }
   };
 
+  const handleTimeUp = useCallback(() => {
+    setIsCorrectAnswer(false);
+    setShowFeedback(true);
+  }, []);
+
   const isRed = team.color === 'red';
   const glowColor = isRed ? 'rgba(220,38,38,0.3)' : 'rgba(37,99,235,0.3)';
   const borderColor = isRed ? 'border-red-500/50' : 'border-blue-500/50';
@@ -189,10 +199,7 @@ export default function QuestionModal({ question, team, onAnswer }) {
           </motion.div>
           
           <div className="absolute top-8 left-8">
-            <Timer seconds={40} onTimeUp={() => {
-              setIsCorrectAnswer(false);
-              setShowFeedback(true);
-            }} />
+            <Timer seconds={40} onTimeUp={handleTimeUp} />
           </div>
           
           <motion.h3 
