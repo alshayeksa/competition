@@ -2,6 +2,8 @@ import React from 'react';
 import { motion } from 'framer-motion';
 
 export default function Square({ value, num, onClick, teams, delay }) {
+  let isUnowned = value === 0;
+
   let styleClasses = 'bg-slate-700 hover:bg-slate-600 shadow-[inset_0_2px_4px_rgba(255,255,255,0.1)]';
   
   if (value === 1) {
@@ -23,7 +25,7 @@ export default function Square({ value, num, onClick, teams, delay }) {
       scale: 1, 
       opacity: 1, 
       rotateX: 0,
-      backgroundColor: value === 0 ? '#334155' : undefined,
+      backgroundColor: value === 0 ? '#1e293b' : undefined,
       boxShadow: value === 0 ? '0px 0px 0px rgba(245, 158, 11, 0)' : undefined,
       transition: { 
         delay, 
@@ -42,10 +44,29 @@ export default function Square({ value, num, onClick, teams, delay }) {
       whileHover={{ scale: value === 0 ? 1.08 : 1, zIndex: 20, boxShadow: value === 0 ? '0px 0px 15px rgba(255,255,255,0.3)' : undefined }}
       whileTap={{ scale: 0.95 }}
       onClick={onClick}
+      disabled={value !== 0}
       className={`w-full h-full rounded-md md:rounded-lg relative transition-colors duration-300 ${styleClasses} flex items-center justify-center overflow-hidden border border-white/5`}
     >
+      {/* تأثير اللون الدوار للمربعات الغير مملوكة */}
+      {isUnowned && (
+        <motion.div
+          animate={{ rotate: 360 }}
+          transition={{ duration: 4, repeat: Infinity, ease: 'linear' }}
+          className="absolute inset-0 z-0 opacity-40 pointer-events-none"
+          style={{
+            background: 'conic-gradient(from 0deg, transparent 0%, transparent 60%, #eab308 80%, transparent 100%)',
+            scale: 2.5
+          }}
+        />
+      )}
+      
+      {/* غطاء لإخفاء وسط الدوران وإظهار الإطار فقط */}
+      {isUnowned && (
+        <div className="absolute inset-[2px] bg-slate-800 rounded-md md:rounded-lg z-10 hover:bg-slate-700 transition-colors duration-200" />
+      )}
+
       {/* Number inside the square */}
-      <span className={`font-black text-xl md:text-2xl drop-shadow-lg z-0 pointer-events-none transition-opacity duration-300 ${value === 0 ? 'text-white/30' : 'text-white/90'}`}>
+      <span className={`font-black text-xl md:text-2xl drop-shadow-lg z-20 pointer-events-none transition-opacity duration-300 ${value === 0 ? 'text-white/30' : 'text-white/90'}`}>
         {num}
       </span>
 
