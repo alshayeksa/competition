@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import GameBoard from './GameBoard';
 import WinnerScreen from './WinnerScreen';
 import TitleLogo from './TitleLogo';
@@ -12,6 +12,19 @@ export default function App() {
   });
   const [winner, setWinner] = useState(null);
   const [initialTurn, setInitialTurn] = useState(1);
+
+  useEffect(() => {
+    if (phase === 'start') {
+      const audio = new Audio('/1.wav');
+      // Uncomment the line below if you want the audio to loop continuously
+      // audio.loop = true;
+      audio.play().catch(e => console.log('Audio autoplay blocked by browser:', e));
+      return () => {
+        audio.pause();
+        audio.currentTime = 0;
+      };
+    }
+  }, [phase]);
 
   const startGame = () => {
     setInitialTurn(Math.random() > 0.5 ? 1 : 2);
