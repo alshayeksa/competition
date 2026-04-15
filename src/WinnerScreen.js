@@ -133,19 +133,15 @@ export default function WinnerScreen({ winner, onRestart }) {
               👑
             </motion.div>
 
-            {/* "ب ط ل ا ل م ع ر ف ة !" — letter by letter */}
-            <motion.div className="flex gap-2 justify-center flex-wrap" dir="rtl">
-              {['ب', 'ط', 'ل', ' ', 'ا', 'ل', 'م', 'ع', 'ر', 'ف', 'ة', '!'].map((ch, i) => (
-                <motion.span
-                  key={i}
-                  initial={{ y: -40, opacity: 0 }}
-                  animate={{ y: 0,   opacity: 1  }}
-                  transition={{ delay: 0.5 + i * 0.07, type: 'spring', bounce: 0.6 }}
-                  className="text-3xl md:text-4xl font-bold text-gray-200"
-                >
-                  {ch === ' ' ? '\u00A0\u00A0\u00A0' : ch}
-                </motion.span>
-              ))}
+            {/* "ب ط ل ا ل م ع ر ف ة !" */}
+            <motion.div
+              initial={{ y: -40, opacity: 0 }}
+              animate={{ y: 0,   opacity: 1  }}
+              transition={{ delay: 0.5, type: 'spring', bounce: 0.6 }}
+              className="text-4xl md:text-5xl font-bold text-gray-200 whitespace-nowrap"
+              dir="rtl"
+            >
+              ب ط ل &nbsp;&nbsp;&nbsp; ا ل م ع ر ف ة !
             </motion.div>
 
             {/* Ornamental divider */}
