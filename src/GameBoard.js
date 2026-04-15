@@ -44,46 +44,9 @@ export default function GameBoard({ teams, initialTurn, onWin }) {
   const [currentTurn, setCurrentTurn] = useState(initialTurn);
 
   useEffect(() => {
-    // تشغيل تأثيرات صوتية مشوقة (تتابع نغمات متتالية مثل السحر أو الصعود)
-    try {
-      const AudioContext = window.AudioContext || window.webkitAudioContext;
-      if (AudioContext) {
-        const ctx = new AudioContext();
-        if (ctx.state === 'suspended') ctx.resume();
-        
-        // نغمات متتالية
-        const notes = [261.63, 329.63, 392.00, 523.25, 659.25, 783.99, 1046.50];
-        
-        notes.forEach((freq, i) => {
-          const osc = ctx.createOscillator();
-          const gain = ctx.createGain();
-          osc.type = 'sine';
-          osc.frequency.setValueAtTime(freq, ctx.currentTime + i * 0.15);
-          
-          gain.gain.setValueAtTime(0, ctx.currentTime + i * 0.15);
-          gain.gain.linearRampToValueAtTime(0.2, ctx.currentTime + i * 0.15 + 0.05);
-          gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + i * 0.15 + 0.6);
-          
-          osc.connect(gain);
-          gain.connect(ctx.destination);
-          osc.start(ctx.currentTime + i * 0.15);
-          osc.stop(ctx.currentTime + i * 0.15 + 0.6);
-        });
-
-        // تأثير الباس (عميق) في النهاية
-        const bass = ctx.createOscillator();
-        const bassGain = ctx.createGain();
-        bass.type = 'triangle';
-        bass.frequency.setValueAtTime(130.81, ctx.currentTime + 1.0);
-        bassGain.gain.setValueAtTime(0, ctx.currentTime + 1.0);
-        bassGain.gain.linearRampToValueAtTime(0.4, ctx.currentTime + 1.1);
-        bassGain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 2.5);
-        bass.connect(bassGain);
-        bassGain.connect(ctx.destination);
-        bass.start(ctx.currentTime + 1.0);
-        bass.stop(ctx.currentTime + 2.5);
-      }
-    } catch (e) { console.log(e); }
+    // تشغيل تأثيرات صوتية مشوقة عند فتح لوحة اللعب
+    const audio = new Audio('/start.mp3');
+    audio.play().catch(e => console.log('Board open audio blocked:', e));
 
     const shuffled = [...allQuestions].sort(() => 0.5 - Math.random());
     const initial = {};
