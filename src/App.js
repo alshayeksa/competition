@@ -19,7 +19,7 @@ export default function App() {
     let playPromise = null;
 
     if (phase === 'start') {
-      audio = new Audio('/1.wav');
+      audio = new Audio('/start.mp3');
       audio.loop = true; // Let's make it loop so that it serves as background music
 
       const tryPlay = () => {
