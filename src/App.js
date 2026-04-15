@@ -16,12 +16,33 @@ export default function App() {
   useEffect(() => {
     if (phase === 'start') {
       const audio = new Audio('/1.wav');
-      // Uncomment the line below if you want the audio to loop continuously
-      // audio.loop = true;
-      audio.play().catch(e => console.log('Audio autoplay blocked by browser:', e));
+      audio.loop = true; // Let's make it loop so that it serves as background music
+
+      const tryPlay = () => {
+        audio.play().catch(e => console.log('Audio autoplay blocked by browser:', e));
+      };
+
+      // Try playing immediately
+      tryPlay();
+
+      // If the browser blocked autoplay, this will trigger playing on the first interaction
+      const onUserInteract = () => {
+        tryPlay();
+        document.removeEventListener('click', onUserInteract);
+        document.removeEventListener('keydown', onUserInteract);
+        document.removeEventListener('touchstart', onUserInteract);
+      };
+
+      document.addEventListener('click', onUserInteract);
+      document.addEventListener('keydown', onUserInteract);
+      document.addEventListener('touchstart', onUserInteract);
+
       return () => {
         audio.pause();
         audio.currentTime = 0;
+        document.removeEventListener('click', onUserInteract);
+        document.removeEventListener('keydown', onUserInteract);
+        document.removeEventListener('touchstart', onUserInteract);
       };
     }
   }, [phase]);
