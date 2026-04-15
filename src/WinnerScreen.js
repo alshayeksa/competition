@@ -133,17 +133,6 @@ export default function WinnerScreen({ winner, onRestart }) {
               👑
             </motion.div>
 
-            {/* "ب ط ل ا ل م ع ر ف ة !" */}
-            <motion.div
-              initial={{ y: -40, opacity: 0 }}
-              animate={{ y: 0,   opacity: 1  }}
-              transition={{ delay: 0.5, type: 'spring', bounce: 0.6 }}
-              className="text-4xl md:text-5xl font-bold text-gray-200 whitespace-nowrap"
-              dir="rtl"
-            >
-              ب ط ل &nbsp;&nbsp;&nbsp; ا ل م ع ر ف ة !
-            </motion.div>
-
             {/* Ornamental divider */}
             <motion.div
               initial={{ scaleX: 0 }} animate={{ scaleX: 1 }}
