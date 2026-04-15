@@ -5,30 +5,13 @@ import Timer from './Timer';
 // مكون رسالة الإجابة
 function AnswerFeedback({ isCorrect, onClose }) {
   useEffect(() => {
-    // تشغيل الصوت المناسب
-    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    
     if (isCorrect) {
-      // صوت النجاح (سلم موسيقي تصاعدي)
-      setTimeout(() => {
-        const osc = audioCtx.createOscillator();
-        const gain = audioCtx.createGain();
-        
-        osc.type = 'sine';
-        osc.frequency.setValueAtTime(440, audioCtx.currentTime);
-        osc.frequency.exponentialRampToValueAtTime(880, audioCtx.currentTime + 0.5);
-        
-        gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.8);
-        
-        osc.connect(gain);
-        gain.connect(audioCtx.destination);
-        
-        osc.start();
-        osc.stop(audioCtx.currentTime + 0.8);
-      }, 300);
+      // إيقاف أي أصوات سابقة وتشغيل صوت الإجابة الصحيحة الجديد
+      const audio = new Audio('/correct.wav');
+      audio.play().catch(e => console.log('Audio error:', e));
     } else {
       // صوت الخطأ (نغمة تنازلية)
+      const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
       setTimeout(() => {
         const osc = audioCtx.createOscillator();
         const gain = audioCtx.createGain();
