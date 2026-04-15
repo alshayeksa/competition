@@ -1,58 +1,27 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 
-// إنشاء AudioContext مرة واحدة فقط (لتجنب حظر المتصفح بعد 6 أصوات)
-let audioCtx = null;
-const getAudioContext = () => {
-  if (!audioCtx) {
-    const AudioContext = window.AudioContext || window.webkitAudioContext;
-    if (AudioContext) audioCtx = new AudioContext();
-  }
-  return audioCtx;
-};
-
-// دالة لتوليد أصوات التنبيه
-const playBeep = (freq, type, duration, vol = 0.5) => {
-  try {
-    const ctx = getAudioContext();
-    if (!ctx) return;
-    
-    // استئناف السياق الصوتي إذا كان معلقاً بسبب المتصفح
-    if (ctx.state === 'suspended') {
-      ctx.resume();
-    }
-    
-    const osc = ctx.createOscillator();
-    const gain = ctx.createGain();
-
-    osc.type = type;
-    osc.frequency.setValueAtTime(freq, ctx.currentTime);
-    
-    // تدرج في الصوت لتجنب "الفرقعة"
-    gain.gain.setValueAtTime(0, ctx.currentTime);
-    gain.gain.linearRampToValueAtTime(vol, ctx.currentTime + 0.05);
-    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + duration);
-
-    osc.connect(gain);
-    gain.connect(ctx.destination);
-    
-    osc.start();
-    osc.stop(ctx.currentTime + duration);
-  } catch (e) {
-    console.log("AudioContext blocked or failed", e);
-  }
-};
-
 export default function Timer({ seconds, onTimeUp }) {
   const [timeLeft, setTimeLeft] = useState(seconds);
   const [isActive, setIsActive] = useState(true);
   const isFirstRender = useRef(true);
   const timerRef = useRef(null);
+  const bgAudioRef = useRef(null);
 
   useEffect(() => {
     // صوت بداية السؤال 
-    const audio = new Audio('/show.wav');
-    audio.play().catch(e => console.log('Audio autoplay blocked by browser:', e));
+    const showAudio = new Audio('/show.wav');
+    showAudio.play().catch(e => console.log('Show audio autoplay blocked by browser:', e));
+
+    // تشغيل صوت التايمر المستمر (timer.mp3 الذي مدته 40 ثانية)
+    const bgAudio = new Audio('/timer.mp3');
+    bgAudioRef.current = bgAudio;
+    bgAudio.play().catch(e => console.log('Timer audio blocked by browser:', e));
+
+    return () => {
+      bgAudio.pause();
+      bgAudio.currentTime = 0;
+    };
   }, []);
 
   useEffect(() => {
@@ -62,21 +31,15 @@ export default function Timer({ seconds, onTimeUp }) {
     }
 
     if (timeLeft <= 0) {
-      // صوت انتهاء الوقت
-      playBeep(200, 'sawtooth', 1.0, 0.6);
+      // إيقاف الصوت عند انتهاء الوقت والوقت يصل للصفر
+      if (bgAudioRef.current) {
+        bgAudioRef.current.pause();
+      }
       setIsActive(false);
       onTimeUp();
       return;
     }
-
-    if (timeLeft < seconds && isActive) {
-      // الاستمرار في صوت التيك التنازلي كل ثانية
-      const freq = timeLeft <= 5 ? 880 : 600; 
-      const vol = timeLeft <= 5 ? 0.5 : 0.2;
-      playBeep(freq, 'square', 0.1, vol);
-    }
-
-  }, [timeLeft, onTimeUp, seconds, isActive]);
+  }, [timeLeft, onTimeUp]);
 
   useEffect(() => {
     if (timeLeft <= 0 || !isActive) return;
@@ -95,6 +58,9 @@ export default function Timer({ seconds, onTimeUp }) {
     if (timerRef.current) {
       clearInterval(timerRef.current);
       timerRef.current = null;
+    }
+    if (bgAudioRef.current) {
+      bgAudioRef.current.pause();
     }
   };
 
