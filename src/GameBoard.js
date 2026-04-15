@@ -126,9 +126,16 @@ export default function GameBoard({ teams, initialTurn, onWin }) {
   return (
     <div className="w-full flex flex-col items-center">
       <div className="mb-8 w-full max-w-4xl flex justify-between items-center bg-white/5 p-4 rounded-2xl backdrop-blur-sm border border-white/10">
-        <div className="text-xl font-bold text-red-400 drop-shadow-md">
+        <motion.div 
+          animate={{ 
+            scale: [1, 1.05, 1], 
+            textShadow: ["0px 0px 8px rgba(248,113,113,0.4)", "0px 0px 20px rgba(248,113,113,0.9)", "0px 0px 8px rgba(248,113,113,0.4)"]
+          }}
+          transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut" }}
+          className="text-3xl md:text-4xl font-black text-red-500 drop-shadow-xl"
+        >
           {teams.team1.name}
-        </div>
+        </motion.div>
         
         <motion.div 
           key={currentTurn}
@@ -139,9 +146,16 @@ export default function GameBoard({ teams, initialTurn, onWin }) {
           الدور الآن: {activeTeam.name}
         </motion.div>
 
-        <div className="text-xl font-bold text-blue-400 drop-shadow-md text-left">
+        <motion.div 
+          animate={{ 
+            scale: [1, 1.05, 1], 
+            textShadow: ["0px 0px 8px rgba(96,165,250,0.4)", "0px 0px 20px rgba(96,165,250,0.9)", "0px 0px 8px rgba(96,165,250,0.4)"]
+          }}
+          transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut", delay: 0.75 }}
+          className="text-3xl md:text-4xl font-black text-blue-400 drop-shadow-xl text-left"
+        >
           {teams.team2.name}
-        </div>
+        </motion.div>
       </div>
 
       <motion.div 
