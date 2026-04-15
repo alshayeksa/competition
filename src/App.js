@@ -114,7 +114,7 @@ export default function App() {
   if (phase === 'won') return <WinnerScreen winner={winner} onRestart={() => setPhase('start')} />;
 
   return (
-    <div dir="rtl" className="min-h-screen bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-gray-800 via-gray-900 to-black text-white p-4 flex flex-col items-center">
+    <div dir="rtl" className="min-h-screen bg-wavy-animated text-white p-4 flex flex-col items-center">
       <GameBoard teams={teams} initialTurn={initialTurn} onWin={(team) => { setWinner(team); setPhase('won'); }} />
     </div>
   );
