@@ -176,22 +176,40 @@ export default function GameBoard({ teams, initialTurn, onWin }) {
         />
       )}
 
-      {/* شرح قواعد اللعبة للمستخدم */}
+      {/* شرح قواعد اللعبة في الجهة اليسرى */}
       <motion.div 
-        initial={{ opacity: 0, y: 30 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 1.5, duration: 0.8, type: 'spring' }}
-        className="mt-6 w-full max-w-3xl bg-slate-800/80 p-5 rounded-xl border border-slate-600 shadow-lg text-center backdrop-blur-sm"
+        initial={{ x: -200, opacity: 0 }}
+        animate={{ x: 0, opacity: 1 }}
+        transition={{ delay: 1.5, type: 'spring', stiffness: 100, damping: 15 }}
+        whileHover={{ scale: 1.05 }}
+        className="fixed top-1/2 left-8 -translate-y-1/2 w-64 md:w-80 bg-slate-900/80 p-6 rounded-2xl border border-amber-500/50 shadow-[0_0_30px_rgba(245,158,11,0.3)] backdrop-blur-md hidden xl:block z-30"
       >
-        <h4 className="text-xl md:text-2xl font-bold text-amber-400 mb-2 flex items-center justify-center gap-2">
-          <span>🎯</span> قواعد الانتصار (جسر المعرفة)
-        </h4>
-        <p className="text-slate-300 text-sm md:text-base leading-relaxed max-w-2xl mx-auto">
-          الفريق الفائز هو من ينجح أولاً في بناء <strong className="text-white">مسار متصل من المربعات</strong>؛ 
-          سواءً بإنشاء خط يربط <strong className="text-red-400">من اليمين إلى اليسار</strong> للوحة، 
-          أو خط يربط <strong className="text-blue-400">من الأعلى إلى الأسفل</strong>. 
-          <br />اختر مربعاتك بذكاء وخطط لقطع الطريق على خصمك!
+        <motion.div
+          animate={{ scale: [1, 1.05, 1], textShadow: ["0px 0px 5px rgba(251,191,36,0.3)", "0px 0px 15px rgba(251,191,36,0.8)", "0px 0px 5px rgba(251,191,36,0.3)"] }}
+          transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
+          className="text-2xl font-black text-amber-400 mb-4 flex items-center gap-3 border-b border-white/10 pb-3"
+        >
+          <span className="text-3xl">🏆</span> 
+          قواعد الانتصار
+        </motion.div>
+        
+        <p className="text-slate-200 text-base leading-loose">
+          يفوز الفريق الذي ينجح في بناء <strong className="text-amber-300">مسار متصل</strong> يربط بين حافتين متقابلتين في اللوحة.
         </p>
+        <ul className="mt-4 space-y-3 text-sm text-slate-300 font-medium">
+          <li className="flex items-start gap-2">
+            <span className="text-emerald-400">✅</span>
+            <span>مسار أفقي (يمين إلى يسار)</span>
+          </li>
+          <li className="flex items-start gap-2">
+            <span className="text-emerald-400">✅</span>
+            <span>مسار عمودي (أعلى إلى أسفل)</span>
+          </li>
+          <li className="flex items-start gap-2">
+            <span className="text-sky-400">💡</span>
+            <span>المسار المتعرّج مسموح به!</span>
+          </li>
+        </ul>
       </motion.div>
     </div>
   );
