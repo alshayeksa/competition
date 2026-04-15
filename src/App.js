@@ -7,8 +7,8 @@ import { motion } from 'framer-motion';
 export default function App() {
   const [phase, setPhase] = useState('start');
   const [teams, setTeams] = useState({
-    team1: { name: 'الفريق الأحمر', color: 'red' },
-    team2: { name: 'الفريق الأزرق', color: 'blue' }
+    team1: { name: 'قطاع الخدمات', color: 'red' },
+    team2: { name: 'قطاع الأعمال', color: 'blue' }
   });
   const [winner, setWinner] = useState(null);
   const [initialTurn, setInitialTurn] = useState(1);
