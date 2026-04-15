@@ -7,21 +7,32 @@ import allQuestions from './questions.json';
 const GRID_SIZE = 10;
 
 const checkWin = (grid, playerNum) => {
-  const visited = Array(GRID_SIZE).fill(0).map(() => Array(GRID_SIZE).fill(false));
-  const dfs = (r, c, isTopBottom) => {
+  // Check Top to Bottom
+  let visited = Array(GRID_SIZE).fill(0).map(() => Array(GRID_SIZE).fill(false));
+  const dfsTB = (r, c) => {
     if (r < 0 || r >= GRID_SIZE || c < 0 || c >= GRID_SIZE || visited[r][c] || grid[r][c] !== playerNum) return false;
-    if (isTopBottom && r === GRID_SIZE - 1) return true;
-    if (!isTopBottom && c === GRID_SIZE - 1) return true;
+    if (r === GRID_SIZE - 1) return true;
     visited[r][c] = true;
-    return dfs(r+1, c, isTopBottom) || dfs(r-1, c, isTopBottom) || dfs(r, c+1, isTopBottom) || dfs(r, c-1, isTopBottom);
+    return dfsTB(r+1, c) || dfsTB(r-1, c) || dfsTB(r, c+1) || dfsTB(r, c-1);
   };
-  
-  if (playerNum === 1) { // Top to bottom
-    for (let c = 0; c < GRID_SIZE; c++) if (grid[0][c] === 1 && dfs(0, c, true)) return true;
+
+  for (let c = 0; c < GRID_SIZE; c++) {
+    if (grid[0][c] === playerNum && dfsTB(0, c)) return true;
   }
-  if (playerNum === 2) { // Right to left
-    for (let r = 0; r < GRID_SIZE; r++) if (grid[r][0] === 2 && dfs(r, 0, false)) return true;
+
+  // Check Left to Right (Right to Left in RTL mode)
+  visited = Array(GRID_SIZE).fill(0).map(() => Array(GRID_SIZE).fill(false));
+  const dfsLR = (r, c) => {
+    if (r < 0 || r >= GRID_SIZE || c < 0 || c >= GRID_SIZE || visited[r][c] || grid[r][c] !== playerNum) return false;
+    if (c === GRID_SIZE - 1) return true;
+    visited[r][c] = true;
+    return dfsLR(r+1, c) || dfsLR(r-1, c) || dfsLR(r, c+1) || dfsLR(r, c-1);
+  };
+
+  for (let r = 0; r < GRID_SIZE; r++) {
+    if (grid[r][0] === playerNum && dfsLR(r, 0)) return true;
   }
+
   return false;
 };
 
