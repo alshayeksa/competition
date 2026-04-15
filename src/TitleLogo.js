@@ -92,36 +92,7 @@ export default function TitleLogo() {
   const intervalRef = useRef(null);
 
   useEffect(() => {
-    playerRef.current = createPlayer();
-
-    const beat = () => {
-      // Clone the audio node so overlapping plays never block each other
-      const a = playerRef.current.cloneNode();
-      a.volume = 1.0;
-      a.play().catch(() => {});
-    };
-
-    const startBeating = () => {
-      if (intervalRef.current) return;
-      beat();
-      intervalRef.current = setInterval(beat, 1100);
-    };
-
-    // Try immediately — works if browser allows autoplay
-    startBeating();
-
-    // Fallback: any user interaction unlocks audio
-    document.addEventListener('click',      startBeating);
-    document.addEventListener('keydown',    startBeating);
-    document.addEventListener('touchstart', startBeating);
-
-    return () => {
-      document.removeEventListener('click',      startBeating);
-      document.removeEventListener('keydown',    startBeating);
-      document.removeEventListener('touchstart', startBeating);
-      clearInterval(intervalRef.current);
-      intervalRef.current = null;
-    };
+    // Heartbeat logic removed to let '1.wav' play alone.
   }, []);
 
   // Heartbeat pulse: LUB (t=0) → DUB (t=0.19) → rest
