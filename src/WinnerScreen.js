@@ -18,6 +18,10 @@ const RAYS = Array.from({ length: 12 }, (_, i) => ({
 }));
 
 export default function WinnerScreen({ winner, onRestart }) {
+  const [viewportSize, setViewportSize] = useState({
+    width: typeof window !== 'undefined' ? window.innerWidth : 0,
+    height: typeof window !== 'undefined' ? window.innerHeight : 0,
+  });
   const isRed = winner.color === 'red';
 
   const primaryColor   = isRed ? '#ef4444' : '#3b82f6';
@@ -48,6 +52,16 @@ export default function WinnerScreen({ winner, onRestart }) {
   useEffect(() => { const t = setTimeout(() => setShow(true), 200); return () => clearTimeout(t); }, []);
 
   useEffect(() => {
+    const handleResize = () => {
+      setViewportSize({ width: window.innerWidth, height: window.innerHeight });
+    };
+
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  useEffect(() => {
     const audio = new Audio('/win.mp3');
     audio.play().catch(err => console.log('Winner audio error:', err));
     return () => {
@@ -59,10 +73,10 @@ export default function WinnerScreen({ winner, onRestart }) {
   return (
     <div
       dir="rtl"
-      className={`min-h-screen bg-gradient-to-b ${bgFrom} via-gray-950 to-black text-white flex flex-col items-center justify-center overflow-hidden relative`}
+      className={`min-h-screen bg-gradient-to-b ${bgFrom} via-gray-950 to-black text-white flex flex-col items-center justify-center overflow-hidden relative px-4 py-8`}
     >
       {/* ── Confetti ── */}
-      <Confetti recycle={true} numberOfPieces={320} colors={confettiColors} />
+      <Confetti width={viewportSize.width} height={viewportSize.height} recycle={true} numberOfPieces={viewportSize.width < 640 ? 140 : 320} colors={confettiColors} />
 
       {/* ── Background radial glow ── */}
       <div
@@ -130,7 +144,7 @@ export default function WinnerScreen({ winner, onRestart }) {
             initial={{ scale: 0.3, opacity: 0, y: 60 }}
             animate={{ scale: 1,   opacity: 1, y: 0  }}
             transition={{ type: 'spring', bounce: 0.5, duration: 1.2 }}
-            className="relative z-10 flex flex-col items-center gap-6 px-8 py-10 text-center"
+            className="relative z-10 flex flex-col items-center gap-4 sm:gap-6 px-4 sm:px-8 py-8 sm:py-10 text-center w-full max-w-4xl"
           >
 
             {/* Title Above Crown */}
@@ -138,7 +152,7 @@ export default function WinnerScreen({ winner, onRestart }) {
               initial={{ y: -40, opacity: 0 }}
               animate={{ y: 0,   opacity: 1  }}
               transition={{ delay: 0.3, type: 'spring', bounce: 0.6 }}
-              className="text-4xl md:text-5xl font-bold text-gray-200 mt-4"
+              className="text-2xl sm:text-4xl md:text-5xl font-bold text-gray-200 mt-2 sm:mt-4 leading-tight"
               dir="rtl"
             >
               بطل مسابقة جسر المعرفة
@@ -148,7 +162,7 @@ export default function WinnerScreen({ winner, onRestart }) {
             <motion.div
               animate={crownAnim}
               transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
-              className="text-7xl drop-shadow-[0_0_25px_rgba(253,224,71,0.9)]"
+              className="text-5xl sm:text-6xl md:text-7xl drop-shadow-[0_0_25px_rgba(253,224,71,0.9)]"
             >
               👑
             </motion.div>
@@ -170,7 +184,7 @@ export default function WinnerScreen({ winner, onRestart }) {
               animate={{ scale: 1,   opacity: 1  }}
               transition={{ delay: 1.0, type: 'spring', bounce: 0.55, duration: 1.0 }}
               animate2={namePulse}
-              className="text-6xl md:text-8xl font-black tracking-wide"
+              className="text-4xl sm:text-6xl md:text-8xl font-black tracking-wide break-words"
               style={{
                 background: `linear-gradient(135deg, #fff 0%, ${secondaryColor} 40%, ${primaryColor} 70%, #fde047 100%)`,
                 WebkitBackgroundClip: 'text',
@@ -188,7 +202,7 @@ export default function WinnerScreen({ winner, onRestart }) {
               transition={{ duration: 1.6, repeat: Infinity, ease: 'easeInOut' }}
               className="absolute pointer-events-none rounded-full"
               style={{
-                width: 420, height: 100,
+                width: viewportSize.width < 640 ? 260 : 420, height: viewportSize.width < 640 ? 72 : 100,
                 background: `radial-gradient(ellipse at center, ${glowRgba} 0%, transparent 70%)`,
                 filter: 'blur(18px)',
                 top: '55%', left: '50%', transform: 'translate(-50%, -50%)',
@@ -201,7 +215,7 @@ export default function WinnerScreen({ winner, onRestart }) {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 1.6 }}
-              className="flex gap-3 text-3xl"
+              className="flex gap-2 sm:gap-3 text-2xl sm:text-3xl"
             >
               {['⭐','🏆','⭐'].map((e, i) => (
                 <motion.span
@@ -222,7 +236,7 @@ export default function WinnerScreen({ winner, onRestart }) {
               whileHover={{ scale: 1.07 }}
               whileTap={{ scale: 0.94 }}
               onClick={onRestart}
-              className="mt-4 px-14 py-5 rounded-2xl font-extrabold text-2xl text-white shadow-2xl border-2 transition-all"
+              className="mt-4 w-full max-w-sm px-8 sm:px-14 py-4 sm:py-5 rounded-2xl font-extrabold text-lg sm:text-2xl text-white shadow-2xl border-2 transition-all"
               style={{
                 background:   `linear-gradient(135deg, ${primaryColor}, ${isRed ? '#dc2626' : '#2563eb'})`,
                 borderColor:  secondaryColor,

@@ -42,7 +42,7 @@ const OrnamentRow = ({ delay }) => (
 
 // ─── ECG / heartbeat trace ────────────────────────────────────────────────────
 const EcgLine = () => (
-  <svg width="300" height="46" viewBox="0 0 300 46" className="opacity-70">
+  <svg viewBox="0 0 300 46" preserveAspectRatio="xMidYMid meet" className="w-full max-w-[220px] sm:max-w-[260px] md:max-w-[300px] h-auto opacity-70">
     <defs>
       <linearGradient id="ecg" x1="0%" y1="0%" x2="100%" y2="0%">
         <stop offset="0%"   stopColor="transparent" />
@@ -107,7 +107,7 @@ export default function TitleLogo() {
   };
 
   return (
-    <div className="relative text-center select-none py-2">
+    <div className="relative w-full max-w-[92vw] sm:max-w-3xl text-center select-none py-2 px-2 mx-auto overflow-hidden">
 
       {/* ── Floating particles ── */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden" style={{ zIndex: 0 }}>
@@ -126,7 +126,7 @@ export default function TitleLogo() {
       <motion.div
         animate={glowAnim}
       transition={{ duration: 1.1, times: glowAnim.times, repeat: Infinity, delay: 1.8 }}
-        className="absolute left-1/2 top-1/2 w-72 h-28 rounded-full pointer-events-none"
+        className="absolute left-1/2 top-1/2 w-48 sm:w-64 md:w-72 h-20 sm:h-24 md:h-28 rounded-full pointer-events-none"
         style={{
           zIndex: 0,
           transform: 'translate(-50%, -50%)',
@@ -146,7 +146,7 @@ export default function TitleLogo() {
         transition={{ duration: 1.1, times: beatAnim.times, repeat: Infinity, delay: 1.8 }}
         style={{ zIndex: 1, position: 'relative' }}
       >
-        <div dir="rtl" className="flex gap-5 justify-center items-end flex-wrap">
+        <div dir="rtl" className="flex gap-2 sm:gap-4 md:gap-5 justify-center items-end flex-wrap">
           {['جسر', 'المعرفة'].map((word, i) => (
             <motion.div
               key={word}
@@ -158,10 +158,10 @@ export default function TitleLogo() {
               {/* depth shadow */}
               <span
                 aria-hidden
-                className="absolute text-7xl md:text-8xl font-black select-none pointer-events-none"
+                className="absolute text-[2.4rem] sm:text-6xl md:text-8xl font-black select-none pointer-events-none"
                 style={{
                   inset: 0,
-                  transform: 'translate(4px, 5px)',
+                  transform: 'translate(3px, 4px)',
                   background: 'linear-gradient(135deg,#92400e,#78350f)',
                   WebkitBackgroundClip: 'text',
                   WebkitTextFillColor: 'transparent',
@@ -175,14 +175,14 @@ export default function TitleLogo() {
 
               {/* main text */}
               <span
-                className="relative text-7xl md:text-8xl font-black"
+                className="relative text-[2.4rem] sm:text-6xl md:text-8xl font-black leading-none"
                 style={{
                   background: 'linear-gradient(140deg, #fef9c3 0%, #fde047 20%, #fbbf24 45%, #f59e0b 65%, #ea580c 100%)',
                   WebkitBackgroundClip: 'text',
                   WebkitTextFillColor: 'transparent',
                   backgroundClip: 'text',
                   filter: 'drop-shadow(0 0 14px rgba(251,191,36,0.75)) drop-shadow(0 3px 8px rgba(0,0,0,0.7))',
-                  letterSpacing: '0.04em',
+                  letterSpacing: '0.02em',
                 }}
               >
                 {word}
@@ -203,14 +203,14 @@ export default function TitleLogo() {
         initial={{ opacity: 0, letterSpacing: '0.6em' }}
         animate={{ opacity: 1, letterSpacing: '0.2em' }}
         transition={{ delay: 1.6, duration: 0.9 }}
-        className="mt-3 text-sm text-amber-300/65 font-light uppercase"
+        className="mt-3 text-[10px] sm:text-xs md:text-sm text-amber-300/65 font-light uppercase leading-relaxed"
         style={{ zIndex: 1, position: 'relative' }}
       >
         تحـدى &nbsp;·&nbsp; تنـافـس &nbsp;·&nbsp; انتـصر
       </motion.p>
 
       {/* ── ECG heartbeat line ── */}
-      <div className="flex justify-center mt-3" style={{ zIndex: 1, position: 'relative' }}>
+      <div className="flex justify-center mt-3 px-4" style={{ zIndex: 1, position: 'relative' }}>
         <EcgLine />
       </div>
 

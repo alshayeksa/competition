@@ -79,7 +79,7 @@ export default function App() {
       <div 
         dir="rtl"
         onClick={() => setPhase('start')}
-        className="min-h-screen bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-indigo-900 via-gray-900 to-black text-white flex flex-col items-center justify-center p-4 cursor-pointer select-none"
+        className="min-h-screen bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-indigo-900 via-gray-900 to-black text-white flex flex-col items-center justify-center px-4 py-8 cursor-pointer select-none overflow-hidden"
       >
         <motion.div
           initial={{ scale: 0.5, opacity: 0 }}
@@ -87,14 +87,14 @@ export default function App() {
           transition={{ type: 'spring', bounce: 0.5, duration: 1 }}
           className="text-center"
         >
-          <div className="text-8xl mb-8">🌉</div>
-          <h1 className="text-5xl md:text-7xl font-black mb-6 bg-gradient-to-r from-amber-300 via-yellow-400 to-amber-300 bg-clip-text text-transparent drop-shadow-2xl">
+          <div className="text-6xl sm:text-7xl md:text-8xl mb-6 md:mb-8">🌉</div>
+          <h1 className="text-3xl sm:text-5xl md:text-7xl font-black mb-4 md:mb-6 bg-gradient-to-r from-amber-300 via-yellow-400 to-amber-300 bg-clip-text text-transparent drop-shadow-2xl leading-tight">
             جسر المعرفة
           </h1>
           <motion.p 
             animate={{ opacity: [0.4, 1, 0.4] }}
             transition={{ repeat: Infinity, duration: 2, ease: 'easeInOut' }}
-            className="text-2xl md:text-3xl text-gray-300 mt-8"
+            className="text-lg sm:text-2xl md:text-3xl text-gray-300 mt-6 md:mt-8"
           >
             اضغط للمتابعة
           </motion.p>
@@ -105,8 +105,8 @@ export default function App() {
 
   if (phase === 'start') {
     return (
-      <div dir="rtl" className="min-h-screen bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-indigo-900 via-gray-900 to-black text-white flex flex-col items-center justify-center p-4">
-        <div className="mb-14">
+      <div dir="rtl" className="min-h-screen bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-indigo-900 via-gray-900 to-black text-white flex flex-col items-center justify-center px-4 py-6 overflow-x-hidden">
+        <div className="mb-8 md:mb-14 w-full flex justify-center">
           <TitleLogo />
         </div>
         
@@ -114,14 +114,14 @@ export default function App() {
           initial={{ scale: 0.8, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ delay: 0.3, duration: 0.5 }}
-          className="flex flex-wrap justify-center gap-12 mb-12 bg-white/5 p-8 rounded-3xl backdrop-blur-md border border-white/10 shadow-2xl"
+          className="w-full max-w-4xl flex flex-col sm:flex-row flex-wrap justify-center gap-6 sm:gap-8 md:gap-12 mb-8 md:mb-12 bg-white/5 p-4 sm:p-6 md:p-8 rounded-3xl backdrop-blur-md border border-white/10 shadow-2xl"
         >
           <div className="flex flex-col gap-4 items-center">
-            <input className="p-3 bg-red-950/50 border-2 border-red-500/50 text-white rounded-xl text-center font-bold text-2xl focus:outline-none focus:border-red-400 focus:ring-4 focus:ring-red-500/20 transition-all w-64" value={teams.team1.name} onChange={e => setTeams({...teams, team1: {...teams.team1, name: e.target.value}})} />
+            <input className="p-3 bg-red-950/50 border-2 border-red-500/50 text-white rounded-xl text-center font-bold text-lg sm:text-xl md:text-2xl focus:outline-none focus:border-red-400 focus:ring-4 focus:ring-red-500/20 transition-all w-full max-w-[18rem]" value={teams.team1.name} onChange={e => setTeams({...teams, team1: {...teams.team1, name: e.target.value}})} />
             <div className="w-full h-3 bg-gradient-to-r from-red-600 to-red-400 rounded-full shadow-[0_0_10px_rgba(220,38,38,0.8)]"></div>
           </div>
           <div className="flex flex-col gap-4 items-center">
-            <input className="p-3 bg-blue-950/50 border-2 border-blue-500/50 text-white rounded-xl text-center font-bold text-2xl focus:outline-none focus:border-blue-400 focus:ring-4 focus:ring-blue-500/20 transition-all w-64" value={teams.team2.name} onChange={e => setTeams({...teams, team2: {...teams.team2, name: e.target.value}})} />
+            <input className="p-3 bg-blue-950/50 border-2 border-blue-500/50 text-white rounded-xl text-center font-bold text-lg sm:text-xl md:text-2xl focus:outline-none focus:border-blue-400 focus:ring-4 focus:ring-blue-500/20 transition-all w-full max-w-[18rem]" value={teams.team2.name} onChange={e => setTeams({...teams, team2: {...teams.team2, name: e.target.value}})} />
             <div className="w-full h-3 bg-gradient-to-r from-blue-600 to-blue-400 rounded-full shadow-[0_0_10px_rgba(37,99,235,0.8)]"></div>
           </div>
         </motion.div>
@@ -133,7 +133,7 @@ export default function App() {
           whileHover={{ scale: 1.05, boxShadow: "0 0 30px rgba(52,211,153,0.6)" }}
           whileTap={{ scale: 0.95 }}
           onClick={startGame} 
-          className="px-12 py-5 bg-gradient-to-r from-emerald-500 to-teal-500 text-3xl font-bold rounded-2xl transition-all shadow-[0_0_20px_rgba(16,185,129,0.4)]"
+          className="w-full max-w-sm px-6 sm:px-10 md:px-12 py-4 md:py-5 bg-gradient-to-r from-emerald-500 to-teal-500 text-xl sm:text-2xl md:text-3xl font-bold rounded-2xl transition-all shadow-[0_0_20px_rgba(16,185,129,0.4)]"
         >
           ابدأ التحدي
         </motion.button>
@@ -146,9 +146,9 @@ export default function App() {
           whileHover={{ scale: 1.05, boxShadow: "0 0 30px rgba(168,85,247,0.6)" }}
           whileTap={{ scale: 0.95 }}
           onClick={() => setShowVideo(true)} 
-          className="mt-6 px-10 py-4 bg-gradient-to-r from-purple-600 to-violet-600 text-2xl font-bold rounded-2xl transition-all shadow-[0_0_20px_rgba(168,85,247,0.4)] flex items-center gap-3"
+          className="mt-4 md:mt-6 w-full max-w-sm px-6 sm:px-8 md:px-10 py-4 bg-gradient-to-r from-purple-600 to-violet-600 text-lg sm:text-xl md:text-2xl font-bold rounded-2xl transition-all shadow-[0_0_20px_rgba(168,85,247,0.4)] flex items-center justify-center gap-3"
         >
-          <span className="text-3xl">▶️</span> شرح المسابقة
+          <span className="text-2xl md:text-3xl">▶️</span> شرح المسابقة
         </motion.button>
 
         {/* نافذة الفيديو */}
@@ -163,7 +163,7 @@ export default function App() {
               initial={{ scale: 0.7, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               transition={{ type: 'spring', bounce: 0.4 }}
-              className="relative w-full max-w-3xl rounded-3xl overflow-hidden border-2 border-purple-500/50 shadow-[0_0_60px_rgba(168,85,247,0.5)]"
+              className="relative w-full max-w-3xl rounded-2xl md:rounded-3xl overflow-hidden border-2 border-purple-500/50 shadow-[0_0_60px_rgba(168,85,247,0.5)]"
             >
               <video 
                 src="/merged.mp4" 
@@ -173,7 +173,7 @@ export default function App() {
               />
               <button 
                 onClick={() => setShowVideo(false)}
-                className="absolute top-4 left-4 w-12 h-12 bg-black/70 hover:bg-black/90 rounded-full flex items-center justify-center text-white text-2xl font-bold transition-colors border border-white/20"
+                className="absolute top-3 left-3 md:top-4 md:left-4 w-10 h-10 md:w-12 md:h-12 bg-black/70 hover:bg-black/90 rounded-full flex items-center justify-center text-white text-xl md:text-2xl font-bold transition-colors border border-white/20"
               >
                 ✕
               </button>
@@ -187,7 +187,7 @@ export default function App() {
   if (phase === 'won') return <WinnerScreen winner={winner} onRestart={() => setPhase('start')} />;
 
   return (
-    <div dir="rtl" className="min-h-screen bg-wavy-animated text-white p-4 flex flex-col items-center">
+    <div dir="rtl" className="min-h-screen bg-wavy-animated text-white px-3 py-4 md:p-4 flex flex-col items-center overflow-x-hidden">
       <GameBoard teams={teams} initialTurn={initialTurn} onWin={(team) => { setWinner(team); setPhase('won'); }} />
     </div>
   );

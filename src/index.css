@@ -8,6 +8,16 @@ body {
   font-family: 'Tajawal', sans-serif;
 }
 
+html, body, #root {
+  min-height: 100%;
+  width: 100%;
+  overflow-x: hidden;
+}
+
+* {
+  box-sizing: border-box;
+}
+
 @keyframes pan-bg {
   0% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }

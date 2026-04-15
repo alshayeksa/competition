@@ -20,13 +20,13 @@ function AnswerFeedback({ isCorrect, onClose }) {
       }
     };
 
-    // ننتظر 4 ثواني بعد انتهاء الصوت لزيادة الحماس قبل إغلاق الشاشة
-    audio.onended = () => setTimeout(finish, 4000);
+    // ننتظر 2 ثواني بعد انتهاء الصوت لزيادة الحماس قبل إغلاق الشاشة
+    audio.onended = () => setTimeout(finish, 2000);
 
     audio.play().catch(e => {
       console.log('Audio error:', e);
-      // Fallback if browser blocks autoplay (e.g. 5 seconds)
-      setTimeout(finish, 5000);
+      // Fallback if browser blocks autoplay (e.g. 4 seconds)
+      setTimeout(finish, 4000);
     });
 
     // Safety fallback in case audio gets stuck
@@ -53,7 +53,7 @@ function AnswerFeedback({ isCorrect, onClose }) {
           initial={{ rotateY: 90 }}
           animate={{ rotateY: 0 }}
           transition={{ delay: 0.1, type: 'spring', bounce: 0.6 }}
-          className={`relative p-12 md:p-16 rounded-3xl max-w-2xl w-full text-center border-4 ${isCorrect ? 'border-emerald-400 bg-gradient-to-br from-emerald-900 to-emerald-800' : 'border-rose-400 bg-gradient-to-br from-rose-900 to-rose-800'}`}
+          className={`relative p-6 sm:p-8 md:p-16 rounded-3xl max-w-2xl w-full text-center border-4 ${isCorrect ? 'border-emerald-400 bg-gradient-to-br from-emerald-900 to-emerald-800' : 'border-rose-400 bg-gradient-to-br from-rose-900 to-rose-800'}`}
           style={{ 
             boxShadow: isCorrect 
               ? '0 0 80px rgba(52, 211, 153, 0.6), inset 0 0 40px rgba(52, 211, 153, 0.3)' 
@@ -93,10 +93,10 @@ function AnswerFeedback({ isCorrect, onClose }) {
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
             transition={{ delay: 0.2, type: 'spring', bounce: 0.8 }}
-            className="mb-8"
+            className="mb-5 sm:mb-8"
           >
-            <div className={`inline-flex items-center justify-center w-32 h-32 rounded-full ${isCorrect ? 'bg-emerald-500/20' : 'bg-rose-500/20'} border-4 ${isCorrect ? 'border-emerald-400' : 'border-rose-400'}`}>
-              <span className={`text-6xl ${isCorrect ? 'text-emerald-300' : 'text-rose-300'}`}>
+            <div className={`inline-flex items-center justify-center w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32 rounded-full ${isCorrect ? 'bg-emerald-500/20' : 'bg-rose-500/20'} border-4 ${isCorrect ? 'border-emerald-400' : 'border-rose-400'}`}>
+              <span className={`text-5xl sm:text-6xl ${isCorrect ? 'text-emerald-300' : 'text-rose-300'}`}>
                 {isCorrect ? '🎯' : '💫'}
               </span>
             </div>
@@ -107,7 +107,7 @@ function AnswerFeedback({ isCorrect, onClose }) {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
-            className={`text-5xl md:text-6xl font-black mb-6 ${isCorrect ? 'text-emerald-100' : 'text-rose-100'}`}
+            className={`text-3xl sm:text-4xl md:text-6xl font-black mb-4 sm:mb-6 ${isCorrect ? 'text-emerald-100' : 'text-rose-100'}`}
           >
             {isCorrect ? 'إجابة صحيحة!' : 'إجابة خاطئة'}
           </motion.h2>
@@ -116,7 +116,7 @@ function AnswerFeedback({ isCorrect, onClose }) {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4 }}
-            className={`text-2xl md:text-3xl font-bold mb-8 ${isCorrect ? 'text-emerald-200' : 'text-rose-200'}`}
+            className={`text-lg sm:text-2xl md:text-3xl font-bold mb-5 sm:mb-8 ${isCorrect ? 'text-emerald-200' : 'text-rose-200'}`}
           >
             {isCorrect ? '🎉 أحسنت! نقطة مضمونة 🎉' : '💫 حظاً أوفر في السؤال القادم 💫'}
           </motion.p>
@@ -126,7 +126,7 @@ function AnswerFeedback({ isCorrect, onClose }) {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.5 }}
-            className={`text-xl ${isCorrect ? 'text-emerald-300' : 'text-rose-300'} italic`}
+            className={`text-base sm:text-lg md:text-xl ${isCorrect ? 'text-emerald-300' : 'text-rose-300'} italic`}
           >
             {isCorrect ? 'مستوى ذكاءك مذهل!' : 'لا تستسلم، المعرفة تحتاج صبراً'}
           </motion.div>
@@ -136,9 +136,9 @@ function AnswerFeedback({ isCorrect, onClose }) {
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
             transition={{ delay: 0.6 }}
-            className="mt-8"
+            className="mt-6 sm:mt-8"
           >
-            <div className={`h-1 w-48 mx-auto rounded-full ${isCorrect ? 'bg-emerald-400' : 'bg-rose-400'}`} />
+            <div className={`h-1 w-32 sm:w-40 md:w-48 mx-auto rounded-full ${isCorrect ? 'bg-emerald-400' : 'bg-rose-400'}`} />
           </motion.div>
         </motion.div>
       </motion.div>
@@ -192,7 +192,7 @@ export default function QuestionModal({ question, team, onAnswer }) {
       )}
 
       {/* النافذة الرئيسية */}
-      <div className="fixed inset-0 bg-black/90 backdrop-blur-md flex items-center justify-center p-4 z-40" dir="rtl">
+      <div className="fixed inset-0 bg-black/90 backdrop-blur-md flex items-center justify-center p-3 sm:p-4 z-40 overflow-y-auto" dir="rtl">
         
         {/* جسيمات خلفية متحركة */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
@@ -215,7 +215,7 @@ export default function QuestionModal({ question, team, onAnswer }) {
           initial={{ opacity: 0, scale: 0.6, rotateX: 40 }} 
           animate={{ opacity: 1, scale: 1, rotateX: 0 }} 
           transition={{ type: 'spring', bounce: 0.45, duration: 0.8 }}
-          className={`bg-gradient-to-b from-slate-900 via-slate-900 to-slate-950 p-8 md:p-12 rounded-3xl max-w-3xl w-full text-center relative border-2 ${borderColor} overflow-hidden`}
+          className={`my-4 bg-gradient-to-b from-slate-900 via-slate-900 to-slate-950 p-4 sm:p-6 md:p-12 rounded-3xl max-w-3xl w-full text-center relative border-2 ${borderColor} overflow-hidden`}
           style={{ boxShadow: `0 0 80px ${glowColor}, 0 0 160px ${glowColor}, inset 0 0 30px ${glowColor}` }}
         >
           
@@ -238,18 +238,18 @@ export default function QuestionModal({ question, team, onAnswer }) {
             initial={{ y: -30, opacity: 0, scale: 0.7 }}
             animate={{ y: 0, opacity: 1, scale: 1 }}
             transition={{ type: 'spring', bounce: 0.6 }}
-            className={`inline-flex items-center gap-2 px-8 py-3 rounded-full border-2 mb-8 ${isRed ? 'bg-red-950/70 border-red-500 text-red-300' : 'bg-blue-950/70 border-blue-500 text-blue-300'}`}
+            className={`inline-flex max-w-full items-center gap-2 px-4 sm:px-6 md:px-8 py-2 sm:py-3 rounded-full border-2 mb-6 md:mb-8 ${isRed ? 'bg-red-950/70 border-red-500 text-red-300' : 'bg-blue-950/70 border-blue-500 text-blue-300'}`}
             style={{ boxShadow: `0 0 20px ${glowColor}` }}
           >
             <motion.span 
               animate={{ scale: [1, 1.3, 1] }}
               transition={{ repeat: Infinity, duration: 1.5 }}
-              className="text-2xl"
+              className="text-xl sm:text-2xl"
             >⚡</motion.span>
-            <span className="text-xl font-black">سؤال لـ: {team.name}</span>
+            <span className="text-sm sm:text-lg md:text-xl font-black break-words">سؤال لـ: {team.name}</span>
           </motion.div>
           
-          <div className="absolute top-8 left-8">
+          <div className="absolute top-3 left-3 sm:top-5 sm:left-5 md:top-8 md:left-8">
             <Timer seconds={40} onTimeUp={handleTimeUp} />
           </div>
           
@@ -258,7 +258,7 @@ export default function QuestionModal({ question, team, onAnswer }) {
             initial={{ opacity: 0, y: 20, scale: 0.9 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             transition={{ delay: 0.2, type: 'spring', bounce: 0.4 }}
-            className="text-3xl md:text-4xl font-black mb-14 leading-relaxed"
+            className="text-xl sm:text-2xl md:text-4xl font-black mb-8 sm:mb-10 md:mb-14 leading-relaxed pt-12 sm:pt-14 md:pt-0"
             style={{
               background: 'linear-gradient(180deg, #ffffff 0%, #e2e8f0 50%, #94a3b8 100%)',
               WebkitBackgroundClip: 'text',
@@ -293,7 +293,7 @@ export default function QuestionModal({ question, team, onAnswer }) {
                 whileTap={optionsEnabled && !showFeedback ? { scale: 0.92 } : {}}
                 onClick={() => handleOptionClick(idx)}
                 disabled={!optionsEnabled || showFeedback}
-                className={`relative overflow-hidden p-5 md:p-6 rounded-2xl text-xl md:text-2xl text-white font-bold shadow-xl group transition-all duration-300 border-2 ${c.border} ${(!optionsEnabled || showFeedback) ? 'pointer-events-none opacity-60' : 'cursor-pointer'}`}
+                className={`relative overflow-hidden p-4 sm:p-5 md:p-6 rounded-2xl text-base sm:text-lg md:text-2xl text-white font-bold shadow-xl group transition-all duration-300 border-2 ${c.border} ${(!optionsEnabled || showFeedback) ? 'pointer-events-none opacity-60' : 'cursor-pointer'}`}
                 style={{ boxShadow: `0 0 15px ${c.glow}` }}
               >
                 {/* خلفية متدرجة نابضة */}
@@ -315,7 +315,7 @@ export default function QuestionModal({ question, team, onAnswer }) {
                 <motion.span 
                   animate={{ scale: [1, 1.2, 1] }}
                   transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut', delay: idx * 0.2 }}
-                  className={`absolute top-3 right-3 w-9 h-9 rounded-full flex items-center justify-center text-sm font-black ${c.label} backdrop-blur-sm border border-white/20`}
+                  className={`absolute top-2 right-2 sm:top-3 sm:right-3 w-8 h-8 sm:w-9 sm:h-9 rounded-full flex items-center justify-center text-xs sm:text-sm font-black ${c.label} backdrop-blur-sm border border-white/20`}
                 >
                   {optionLabels[idx]}
                 </motion.span>

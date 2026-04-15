@@ -4,7 +4,7 @@ import Square from './Square';
 import QuestionModal from './QuestionModal';
 import allQuestions from './questions.json';
 
-const GRID_SIZE = 10;
+const GRID_SIZE = 6;
 
 const checkWin = (grid, playerNum) => {
   // Check Top to Bottom
@@ -125,14 +125,14 @@ export default function GameBoard({ teams, initialTurn, onWin }) {
 
   return (
     <div className="w-full flex flex-col items-center">
-      <div className="mb-8 w-full max-w-4xl flex justify-between items-center bg-white/5 p-4 rounded-2xl backdrop-blur-sm border border-white/10">
+      <div className="mb-6 md:mb-8 w-full max-w-4xl flex flex-col gap-4 sm:gap-5 lg:flex-row lg:justify-between lg:items-center bg-white/5 p-3 sm:p-4 rounded-2xl backdrop-blur-sm border border-white/10">
         <motion.div 
           animate={{ 
             scale: [1, 1.05, 1], 
             textShadow: ["0px 0px 8px rgba(248,113,113,0.4)", "0px 0px 20px rgba(248,113,113,0.9)", "0px 0px 8px rgba(248,113,113,0.4)"]
           }}
           transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut" }}
-          className="text-3xl md:text-4xl font-black text-red-500 drop-shadow-xl"
+          className="text-2xl sm:text-3xl md:text-4xl font-black text-red-500 drop-shadow-xl text-center lg:text-right break-words"
         >
           {teams.team1.name}
         </motion.div>
@@ -141,7 +141,7 @@ export default function GameBoard({ teams, initialTurn, onWin }) {
           key={currentTurn}
           initial={{ scale: 0.8, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
-          className={`px-10 py-3 rounded-full text-2xl font-black text-white ${turnColorClass} border-2`}
+          className={`px-4 sm:px-8 md:px-10 py-3 rounded-full text-base sm:text-xl md:text-2xl font-black text-white ${turnColorClass} border-2 text-center self-center max-w-full`}
         >
           الدور الآن: {activeTeam.name}
         </motion.div>
@@ -152,7 +152,7 @@ export default function GameBoard({ teams, initialTurn, onWin }) {
             textShadow: ["0px 0px 8px rgba(96,165,250,0.4)", "0px 0px 20px rgba(96,165,250,0.9)", "0px 0px 8px rgba(96,165,250,0.4)"]
           }}
           transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut", delay: 0.75 }}
-          className="text-3xl md:text-4xl font-black text-blue-400 drop-shadow-xl text-left"
+          className="text-2xl sm:text-3xl md:text-4xl font-black text-blue-400 drop-shadow-xl text-center lg:text-left break-words"
         >
           {teams.team2.name}
         </motion.div>
@@ -161,10 +161,10 @@ export default function GameBoard({ teams, initialTurn, onWin }) {
       <motion.div 
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="w-full max-w-3xl aspect-square grid grid-cols-10 gap-1 md:gap-2 bg-gray-900/80 p-3 rounded-2xl border border-white/10 shadow-[0_0_50px_rgba(0,0,0,0.5)]" dir="ltr"
+        className="w-full max-w-3xl aspect-square grid grid-cols-6 gap-1 md:gap-2 bg-gray-900/80 p-2 sm:p-3 rounded-2xl border border-white/10 shadow-[0_0_50px_rgba(0,0,0,0.5)]" dir="ltr"
       >
         {grid.map((row, r) => row.map((cell, c) => (
-          <Square key={`${r}-${c}`} value={cell} num={r * 10 + (10 - c)} teams={teams} onClick={() => handleCellClick(r, c)} delay={(r + (9 - c)) * 0.05} />
+          <Square key={`${r}-${c}`} value={cell} num={r * GRID_SIZE + (GRID_SIZE - c)} teams={teams} onClick={() => handleCellClick(r, c)} delay={(r + (GRID_SIZE - 1 - c)) * 0.05} />
         )))}
       </motion.div>
       

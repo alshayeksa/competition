@@ -45,7 +45,7 @@ export default function Square({ value, num, onClick, teams, delay }) {
       whileTap={{ scale: 0.95 }}
       onClick={onClick}
       disabled={value !== 0}
-      className={`w-full h-full rounded-md md:rounded-lg relative transition-colors duration-300 ${styleClasses} flex items-center justify-center overflow-hidden border border-white/5`}
+      className={`w-full h-full rounded-md md:rounded-lg relative transition-colors duration-300 ${styleClasses} flex items-center justify-center overflow-hidden border border-white/5 aspect-square min-w-0`}
     >
       {/* تأثير اللون الدوار للمربعات الغير مملوكة */}
       {isUnowned && (
@@ -66,7 +66,7 @@ export default function Square({ value, num, onClick, teams, delay }) {
       )}
 
       {/* Number inside the square */}
-      <span className={`font-black text-xl md:text-2xl drop-shadow-lg z-20 pointer-events-none transition-opacity duration-300 ${value === 0 ? 'text-white/30' : 'text-white/90'}`}>
+      <span className={`font-black text-sm sm:text-lg md:text-2xl drop-shadow-lg z-20 pointer-events-none transition-opacity duration-300 ${value === 0 ? 'text-white/30' : 'text-white/90'}`}>
         {num}
       </span>
 

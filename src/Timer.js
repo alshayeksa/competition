@@ -79,9 +79,9 @@ export default function Timer({ seconds, onTimeUp }) {
     <motion.div 
       animate={isWarning ? { scale: [1, 1.1, 1], color: ['#fff', '#ef4444', '#fff'] } : {}}
       transition={isWarning ? { repeat: Infinity, duration: 0.5 } : {}}
-      className={`relative w-16 h-16 md:w-20 md:h-20 flex items-center justify-center rounded-full border-4 shadow-lg bg-slate-800 ${isWarning ? 'border-red-500 shadow-[0_0_15px_rgba(239,68,68,0.8)]' : 'border-amber-400 shadow-[0_0_15px_rgba(251,191,36,0.5)]'}`}
+      className={`relative w-12 h-12 sm:w-14 sm:h-14 md:w-20 md:h-20 flex items-center justify-center rounded-full border-4 shadow-lg bg-slate-800 ${isWarning ? 'border-red-500 shadow-[0_0_15px_rgba(239,68,68,0.8)]' : 'border-amber-400 shadow-[0_0_15px_rgba(251,191,36,0.5)]'}`}
     >
-      <span className="text-2xl md:text-3xl font-black">{timeLeft}</span>
+      <span className="text-lg sm:text-xl md:text-3xl font-black">{timeLeft}</span>
     </motion.div>
   );
 }
