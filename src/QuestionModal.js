@@ -15,8 +15,8 @@ function AnswerFeedback({ isCorrect, onClose }) {
       audio.play().catch(e => console.log('Audio error:', e));
     }
     
-    // إغلاق الرسالة بعد 2.5 ثانية
-    const timer = setTimeout(onClose, 2500);
+    // إغلاق الرسالة بعد 5 ثواني
+    const timer = setTimeout(onClose, 5000);
     return () => clearTimeout(timer);
   }, [isCorrect, onClose]);
 
