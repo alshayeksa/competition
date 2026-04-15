@@ -14,12 +14,20 @@ export default function App() {
   const [initialTurn, setInitialTurn] = useState(1);
 
   useEffect(() => {
+    let isCancelled = false;
+    let audio = null;
+    let playPromise = null;
+
     if (phase === 'start') {
-      const audio = new Audio('/1.wav');
+      audio = new Audio('/1.wav');
       audio.loop = true; // Let's make it loop so that it serves as background music
 
       const tryPlay = () => {
-        audio.play().catch(e => console.log('Audio autoplay blocked by browser:', e));
+        if (isCancelled) return;
+        playPromise = audio.play();
+        if (playPromise !== undefined) {
+          playPromise.catch(e => console.log('Audio autoplay blocked by browser:', e));
+        }
       };
 
       // Try playing immediately
@@ -27,7 +35,12 @@ export default function App() {
 
       // If the browser blocked autoplay, this will trigger playing on the first interaction
       const onUserInteract = () => {
+        if (isCancelled) return;
         tryPlay();
+        cleanupListeners();
+      };
+
+      const cleanupListeners = () => {
         document.removeEventListener('click', onUserInteract);
         document.removeEventListener('keydown', onUserInteract);
         document.removeEventListener('touchstart', onUserInteract);
@@ -38,11 +51,19 @@ export default function App() {
       document.addEventListener('touchstart', onUserInteract);
 
       return () => {
-        audio.pause();
-        audio.currentTime = 0;
-        document.removeEventListener('click', onUserInteract);
-        document.removeEventListener('keydown', onUserInteract);
-        document.removeEventListener('touchstart', onUserInteract);
+        isCancelled = true;
+        cleanupListeners();
+        if (audio) {
+          if (playPromise !== null && playPromise !== undefined) {
+            playPromise.then(() => {
+              audio.pause();
+              audio.currentTime = 0;
+            }).catch(() => {});
+          } else {
+            audio.pause();
+            audio.currentTime = 0;
+          }
+        }
       };
     }
   }, [phase]);
