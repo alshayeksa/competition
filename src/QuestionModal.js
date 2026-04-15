@@ -15,7 +15,8 @@ function AnswerFeedback({ isCorrect, onClose }) {
       }
     };
 
-    audio.onended = finish;
+    // ننتظر ثانيتين بعد انتهاء الصوت لزيادة الحماس قبل إغلاق الشاشة
+    audio.onended = () => setTimeout(finish, 2000);
 
     audio.play().catch(e => {
       console.log('Audio error:', e);
@@ -24,7 +25,7 @@ function AnswerFeedback({ isCorrect, onClose }) {
     });
 
     // Safety fallback in case audio gets stuck
-    const timer = setTimeout(finish, 10000);
+    const timer = setTimeout(finish, 12000);
 
     return () => {
       clearTimeout(timer);
