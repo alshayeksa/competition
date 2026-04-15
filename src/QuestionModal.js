@@ -10,25 +10,9 @@ function AnswerFeedback({ isCorrect, onClose }) {
       const audio = new Audio('/correct.wav');
       audio.play().catch(e => console.log('Audio error:', e));
     } else {
-      // صوت الخطأ (نغمة تنازلية)
-      const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-      setTimeout(() => {
-        const osc = audioCtx.createOscillator();
-        const gain = audioCtx.createGain();
-        
-        osc.type = 'sawtooth';
-        osc.frequency.setValueAtTime(440, audioCtx.currentTime);
-        osc.frequency.exponentialRampToValueAtTime(220, audioCtx.currentTime + 0.5);
-        
-        gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.8);
-        
-        osc.connect(gain);
-        gain.connect(audioCtx.destination);
-        
-        osc.start();
-        osc.stop(audioCtx.currentTime + 0.8);
-      }, 300);
+      // إيقاف أي أصوات سابقة وتشغيل صوت الإجابة الخاطئة الجديد
+      const audio = new Audio('/wrong.wav');
+      audio.play().catch(e => console.log('Audio error:', e));
     }
     
     // إغلاق الرسالة بعد 2.5 ثانية
