@@ -271,52 +271,72 @@ export default function QuestionModal({ question, team, onAnswer }) {
           
           {/* الخيارات */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 md:gap-6">
-            {question.options.map((opt, idx) => (
+            {question.options.map((opt, idx) => {
+              const optColors = [
+                { bg: 'from-rose-600 to-red-800', border: 'border-rose-400', glow: 'rgba(244,63,94,0.6)', label: 'bg-rose-500/40 text-rose-200' },
+                { bg: 'from-sky-600 to-blue-800', border: 'border-sky-400', glow: 'rgba(56,189,248,0.6)', label: 'bg-sky-500/40 text-sky-200' },
+                { bg: 'from-amber-500 to-yellow-700', border: 'border-amber-400', glow: 'rgba(245,158,11,0.6)', label: 'bg-amber-500/40 text-amber-200' },
+                { bg: 'from-emerald-500 to-green-800', border: 'border-emerald-400', glow: 'rgba(52,211,153,0.6)', label: 'bg-emerald-500/40 text-emerald-200' },
+              ];
+              const c = optColors[idx];
+              return (
               <motion.button 
                 key={idx} 
-                initial={{ opacity: 0, y: 40, scale: 0.8 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
-                transition={{ delay: 0.4 + idx * 0.12, type: 'spring', bounce: 0.5 }}
+                initial={{ opacity: 0, y: 50, scale: 0.7, rotateY: 90 }}
+                animate={{ opacity: 1, y: 0, scale: 1, rotateY: 0 }}
+                transition={{ delay: 0.4 + idx * 0.15, type: 'spring', bounce: 0.5 }}
                 whileHover={optionsEnabled && !showFeedback ? { 
-                  scale: 1.06, 
-                  boxShadow: `0 0 30px ${glowStrong}`,
-                  y: -4
+                  scale: 1.08, 
+                  boxShadow: `0 0 40px ${c.glow}`,
+                  y: -6
                 } : {}}
-                whileTap={optionsEnabled && !showFeedback ? { scale: 0.95 } : {}}
+                whileTap={optionsEnabled && !showFeedback ? { scale: 0.92 } : {}}
                 onClick={() => handleOptionClick(idx)}
                 disabled={!optionsEnabled || showFeedback}
-                className={`relative overflow-hidden p-5 md:p-6 rounded-2xl text-xl md:text-2xl text-white font-bold shadow-xl group transition-colors duration-300 ${(!optionsEnabled || showFeedback) ? 'pointer-events-none opacity-60' : 'cursor-pointer'} ${isRed ? 'bg-gradient-to-br from-slate-800 to-red-950/40 border-2 border-red-500/30 hover:border-red-400' : 'bg-gradient-to-br from-slate-800 to-blue-950/40 border-2 border-blue-500/30 hover:border-blue-400'}`}
+                className={`relative overflow-hidden p-5 md:p-6 rounded-2xl text-xl md:text-2xl text-white font-bold shadow-xl group transition-all duration-300 border-2 ${c.border} ${(!optionsEnabled || showFeedback) ? 'pointer-events-none opacity-60' : 'cursor-pointer'}`}
+                style={{ boxShadow: `0 0 15px ${c.glow}` }}
               >
-                {/* حركة الإضاءة المتنقلة */}
+                {/* خلفية متدرجة نابضة */}
+                <motion.div
+                  animate={{ opacity: [0.4, 0.7, 0.4] }}
+                  transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut', delay: idx * 0.4 }}
+                  className={`absolute inset-0 rounded-2xl bg-gradient-to-br ${c.bg} pointer-events-none`}
+                />
+
+                {/* شعاع ضوئي متحرك */}
                 <motion.div
                   animate={{ x: ['-200%', '200%'] }}
-                  transition={{ duration: 2.5, repeat: Infinity, ease: 'easeInOut', delay: idx * 0.3 }}
-                  className="absolute inset-0 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity"
-                  style={{ background: `linear-gradient(90deg, transparent, ${glowColor}, transparent)` }}
+                  transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut', delay: idx * 0.5 }}
+                  className="absolute inset-0 pointer-events-none"
+                  style={{ background: `linear-gradient(105deg, transparent 40%, rgba(255,255,255,0.25) 50%, transparent 60%)` }}
                 />
-                
+
                 {/* حرف الاختيار */}
-                <span className={`absolute top-3 right-3 w-8 h-8 rounded-full flex items-center justify-center text-sm font-black ${isRed ? 'bg-red-500/30 text-red-300' : 'bg-blue-500/30 text-blue-300'}`}>
+                <motion.span 
+                  animate={{ scale: [1, 1.2, 1] }}
+                  transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut', delay: idx * 0.2 }}
+                  className={`absolute top-3 right-3 w-9 h-9 rounded-full flex items-center justify-center text-sm font-black ${c.label} backdrop-blur-sm border border-white/20`}
+                >
                   {optionLabels[idx]}
-                </span>
-                
-                {/* دوران الإطار للمربعات النشطة */}
+                </motion.span>
+
+                {/* دوران الإطار */}
                 {optionsEnabled && !showFeedback && (
                   <motion.div
                     animate={{ rotate: 360 }}
-                    transition={{ duration: 6, repeat: Infinity, ease: 'linear' }}
-                    className="absolute inset-0 pointer-events-none opacity-20"
+                    transition={{ duration: 5, repeat: Infinity, ease: 'linear' }}
+                    className="absolute inset-0 pointer-events-none opacity-30"
                     style={{
-                      background: `conic-gradient(from 0deg, transparent 0%, transparent 70%, ${isRed ? '#ef4444' : '#3b82f6'} 85%, transparent 100%)`,
+                      background: `conic-gradient(from 0deg, transparent 0%, transparent 60%, white 80%, transparent 100%)`,
                       scale: 2.5
                     }}
                   />
                 )}
-                <div className="absolute inset-[2px] bg-slate-800/90 rounded-xl z-0 group-hover:bg-slate-700/90 transition-colors" />
 
-                <span className="relative z-10">{opt}</span>
+                <span className="relative z-10 drop-shadow-lg">{opt}</span>
               </motion.button>
-            ))}
+              );
+            })}
           </div>
 
         </motion.div>
