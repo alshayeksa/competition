@@ -117,10 +117,12 @@ export default function App() {
           className="w-full max-w-4xl flex flex-col sm:flex-row flex-wrap justify-center gap-6 sm:gap-8 md:gap-12 mb-8 md:mb-12 bg-white/5 p-4 sm:p-6 md:p-8 rounded-3xl backdrop-blur-md border border-white/10 shadow-2xl"
         >
           <div className="flex flex-col gap-4 items-center">
+            <label className="text-red-300 font-bold text-sm sm:text-base md:text-lg mb-2">الفريق الأول</label>
             <input className="p-3 bg-red-950/50 border-2 border-red-500/50 text-white rounded-xl text-center font-bold text-lg sm:text-xl md:text-2xl focus:outline-none focus:border-red-400 focus:ring-4 focus:ring-red-500/20 transition-all w-full max-w-[18rem]" value={teams.team1.name} onChange={e => setTeams({...teams, team1: {...teams.team1, name: e.target.value}})} />
             <div className="w-full h-3 bg-gradient-to-r from-red-600 to-red-400 rounded-full shadow-[0_0_10px_rgba(220,38,38,0.8)]"></div>
           </div>
           <div className="flex flex-col gap-4 items-center">
+            <label className="text-blue-300 font-bold text-sm sm:text-base md:text-lg mb-2">الفريق الثاني</label>
             <input className="p-3 bg-blue-950/50 border-2 border-blue-500/50 text-white rounded-xl text-center font-bold text-lg sm:text-xl md:text-2xl focus:outline-none focus:border-blue-400 focus:ring-4 focus:ring-blue-500/20 transition-all w-full max-w-[18rem]" value={teams.team2.name} onChange={e => setTeams({...teams, team2: {...teams.team2, name: e.target.value}})} />
             <div className="w-full h-3 bg-gradient-to-r from-blue-600 to-blue-400 rounded-full shadow-[0_0_10px_rgba(37,99,235,0.8)]"></div>
           </div>
