@@ -8,8 +8,8 @@ export default function App() {
   const [phase, setPhase] = useState('splash');
   const [showVideo, setShowVideo] = useState(false);
   const [teams, setTeams] = useState({
-    team1: { name: 'قطاع الخدمات', color: 'red' },
-    team2: { name: 'قطاع الأعمال', color: 'blue' }
+    team1: { name: 'اسم الفريق الأول', color: 'red' },
+    team2: { name: 'اسم الفريق الثاني', color: 'blue' }
   });
   const [winner, setWinner] = useState(null);
   const [initialTurn, setInitialTurn] = useState(1);
